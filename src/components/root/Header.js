@@ -16,6 +16,7 @@ function Header() {
           <List sx={{ marginLeft: "auto" }}>
             <Button
               sx={{ mr: 1 }}
+              href="/template/sign-in"
             >Login
             </Button>
             <ColorModeSelect />
