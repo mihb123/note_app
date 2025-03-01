@@ -2,72 +2,82 @@
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
+import { QuickUpdate } from "@/action";
+import { Button } from "@mui/material";
+import SendIcon from '@mui/icons-material/Send';
+import { TiptapEditor, Editor } from './Tiptap/TiptapEditor';
+import { getContent } from '@/app/utils/function';
 
 export default function Main({ item }) {
-  const note = item
-  const [title, setTitle] = React.useState(note.title)
-  const [content, setContent] = React.useState(note.content);
+  const { id, title, content, isPin, updateAt, closed } = item;
+  const [titleValue, setTitleValue] = React.useState(title);
+  const [hide, setHide] = React.useState('none');
+  const [updatedAt, setUpdatedAt] = React.useState(updateAt);
 
-  const updateTitle = async (title, id) => {
-    try {
-      const response = await fetch("/api", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id, title }),
-      });
-      if (!response.ok) throw new Error("Failed to update title");
-    } catch (error) {
-      console.error("Error updating title:", error);
+  let output = null
+  if (content) {
+    output = JSON.parse(content)
+  }
+
+
+  const editor = Editor({
+    content: output,
+    onUpdate: () => {
+      setHide('flex')
     }
-  };
-
-  const updateContent = async (content, id) => {
-    try {
-      const response = await fetch("/api", {
-        method: "PATCH",
-        body: JSON.stringify({ id, content }),
-      });
-      if (!response.ok) throw new Error("Failed to update content");
-    } catch (error) {
-      console.error("Error updating content:", error);
-    }
-  };
-
-  console.log('rendered Main')
-
-  React.useEffect(
-    () => {
-      setTitle((t) => note.title)
-      setContent((c) => note.content)
-    }, [note.id]
-  )
-
+  })
+  // const characters = editor?.storage?.characterCount?.characters()
+  // const result = editor?.getJSON()
+  function handleUpdate() {
+    const now = new Date()
+    const result = editor?.getJSON()
+    item.content = JSON.stringify(result)
+    item.title = titleValue
+    item.updateAt = now.getTime()
+    QuickUpdate(item)
+  }
+  console.log("render Main")
   return (
     <>
-      <Box sx={{ width: "100%", maxWidth: '100%', marginBottom: 2 }}>
-        <TextField fullWidth multiline label="Title" id="Title" minRows={1}
-          variant="standard"
-          value={title}
-          onChange={(e) => {
-            setTitle(e.target.value)
+      <Box sx={{ width: "100%", mb: 2 }}>
+        <input name='id' value={id} type='hidden' sx={{ mb: 2 }} />
+        <input name='isPin' value={isPin} type='hidden' sx={{ mb: 2 }} />
+        <input name='closed' value={closed} type='hidden' sx={{ mb: 2 }} />
+        <input name='updateAt' value={updatedAt} type='hidden' sx={{ mb: 2 }} />
 
-          }} />
-      </Box>
-      <Box sx={{ width: '100%', maxWidth: '100%' }}>
         <TextField
-          id="Content"
+          size='Normal'
           fullWidth
+          required
           multiline
+          label="Title"
+          sx={{ mb: 2 }}
           minRows={1}
-          label="Content" variant="standard"
-          value={content}
+          variant="outlined"
+          name="title"
+          value={titleValue}
           onChange={(e) => {
-            setContent(e.target.value);
-
+            setTitleValue(e.target.value);
           }}
         />
+
+        <TiptapEditor
+          editor={editor}
+        />
+        <Button
+          onClick={() => {
+
+            handleUpdate()
+            setHide("none")
+          }}
+          variant="contained"
+          endIcon={<SendIcon />}
+          sx={{
+            display: hide
+          }}
+          autoFocus
+        >Save</Button>
       </Box>
     </>
-
   );
 }

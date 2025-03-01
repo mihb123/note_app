@@ -76,7 +76,6 @@ export default function SignIn(props) {
   };
 
   const handleSubmit = (event) => {
-    event.preventDefault();
     if (emailError || passwordError) {
       event.preventDefault();
       return;
@@ -119,8 +118,9 @@ export default function SignIn(props) {
     <>
       <CssBaseline enableColorScheme />
       <SignInContainer direction="column" justifyContent="space-between">
-
+        <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
         <Card variant="outlined">
+          <SitemarkIcon />
           <Typography
             component="h1"
             variant="h4"
@@ -217,7 +217,7 @@ export default function SignIn(props) {
             <Typography sx={{ textAlign: 'center' }}>
               Don&apos;t have an account?{' '}
               <Link
-                href="../sign-up"
+                href="/template/sign-up"
                 variant="body2"
                 sx={{ alignSelf: 'center' }}
               >

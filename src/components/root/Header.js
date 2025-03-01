@@ -3,6 +3,7 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import ColorModeSelect from './ColorModeSelect';
+import { Button, List } from '@mui/material';
 
 function Header() {
   return (
@@ -12,9 +13,14 @@ function Header() {
           <Typography variant="h5" noWrap component="div">
             App Note
           </Typography>
-          <ColorModeSelect sx={{
-            position: 'fixed', top: '1rem', right: '1rem'
-          }} />
+          <List sx={{ marginLeft: "auto" }}>
+            <Button
+              sx={{ mr: 1 }}
+            >Login
+            </Button>
+            <ColorModeSelect />
+          </List>
+
         </Toolbar>
       </AppBar>
     </>

@@ -1,9 +1,7 @@
-function Note() {
-  return (
-    <h1>
-      Page Note
-    </h1>
-  );
-}
+'use client'
+import { useRouter } from "next/navigation";
 
-export default Note;
+export default function Note() {
+  const router = useRouter();
+  router.push('/note/create')
+}
