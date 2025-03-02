@@ -49,3 +49,22 @@ export function getContent(item) {
   newContent = 'Nothing'
   return { newContent }
 }
+
+export function GetTime({ minutes, setTimeAgo }) {
+  const hour = 60
+  const day = 24 * hour
+  const month = 30 * day
+  const year = 12 * month
+  if (minutes < hour) {
+    setTimeAgo(minutes > 0 ? `Cập nhật ${minutes} phút trước` : "Vừa xong");
+  } else if (hour < minutes && minutes <= day) {
+    const hours = Math.floor(minutes / hour)
+    setTimeAgo(`Cập nhật ${hours} giờ trước`)
+  } else if (day < minutes && minutes <= month) {
+    const days = Math.floor(minutes / day)
+    setTimeAgo(`Cập nhật ${days} ngày trước`)
+  } else if (month < minutes && minutes <= year) {
+    const months = Math.floor(minutes / month)
+    setTimeAgo(`Cập nhật ${months} tháng trước`)
+  }
+}

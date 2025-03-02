@@ -1,6 +1,6 @@
 import * as React from "react";
-import Header from "../../components/root/Header";
-import DrawerHeader from "../../components/Sidebar/DrawerHeader";
+import Header from "../components/root/Header";
+import DrawerHeader from "../components/Sidebar/DrawerHeader";
 import Note from "@/app/note/Note";
 import Box from '@mui/material/Box';
 import useSWR, { SWRConfig } from 'swr'

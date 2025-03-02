@@ -1,6 +1,6 @@
 'use client'
 import { useParams } from 'next/navigation';
-import Main from '@/components/Main';
+import Main from '@/app/components/Main';
 
 function getNoteById(id) {
   const storage = localStorage.getItem("notes") || [];

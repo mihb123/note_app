@@ -4,21 +4,41 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import { Button } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
-import { createNote } from '@/action'
-import { TiptapEditor, Editor } from '../../../components/Tiptap/TiptapEditor';
+import { createNote } from '@/app/action'
+import { TiptapEditor, Editor } from '../../components/Tiptap/TiptapEditor';
+import { useEditorState } from '@tiptap/react'
 
 export default function CreateNote() {
 
-  function resetData() {
-    editor.commands.setContent("")
-  }
   const editor = Editor()
   const now = new Date()
-  let result = editor?.getJSON()
 
+  const result = useEditorState({
+    editor,
+    selector: () => editor?.getJSON(),
+  })
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    const formData = new FormData(e.currentTarget);
+    const pin = formData.get('isPin') === 'true'
+    const close = formData.get('closed') === 'true'
+
+    const data = {
+      title: formData.get('title'),
+      content: formData.get('content'),
+      isPin: pin,
+      updateAt: formData.get('updateAt'),
+      closed: close
+    }
+    await createNote(data)
+    editor.commands.setContent("")
+    document.getElementById('Title').value = ''
+  }
   return (
     <>
-      <Box component='form' action={createNote} sx={{ width: "100%", mb: 2 }}>
+      <Box component='form' onSubmit={handleSubmit} sx={{ width: "100%", mb: 2 }}>
         <TextField
           fullWidth
           multiline
@@ -31,7 +51,7 @@ export default function CreateNote() {
           placeholder='Leave a title'
           sx={{ mb: 2 }}
         />
-        <input name='content' value={JSON.stringify(result)} type='hidden' sx={{ mb: 2 }} />
+        <input name='content' value={JSON.stringify(result)} sx={{ mb: 2 }} type='hidden' />
         <TiptapEditor
           editor={editor}
         />
@@ -44,7 +64,6 @@ export default function CreateNote() {
           variant="contained"
           type='submit'
           endIcon={<SendIcon />}
-          onClick={() => setTimeout(resetData, 400)}
         >Save</Button>
       </Box >
     </>
