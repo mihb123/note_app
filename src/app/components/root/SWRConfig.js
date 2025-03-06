@@ -7,7 +7,7 @@ export const SWRProvider = ({ children, fallback }) => {
     value={{
       fetcher: (url) => fetch(`${baseUrl}${url}`).then(res => res.json()),
       revalidateIfStale: false,
-
+      fallback,
       errorRetryCount: 3,
       fallback
     }}>{children}

@@ -27,9 +27,9 @@
     {
       "id": 38,
       "title": "Chạy ứng dụng ở Debug Mode",
-      "content": "{\"type\":\"doc\",\"content\":[{\"type\":\"heading\",\"attrs\":{\"level\":2},\"content\":[{\"type\":\"text\",\"text\":\"✅ \"},{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"3. Dùng \"},{\"type\":\"text\",\"marks\":[{\"type\":\"code\"}],\"text\":\"setInterval()\"},{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\" với Debug Mode\"}]},{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"Bạn có thể bật \"},{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"Node.js Debug Mode\"},{\"type\":\"text\",\"text\":\" để kiểm tra các \"},{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"Timers đang hoạt động\"},{\"type\":\"text\",\"text\":\".\"}]},{\"type\":\"heading\",\"attrs\":{\"level\":3},\"content\":[{\"type\":\"text\",\"text\":\"📌 \"},{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"Chạy ứng dụng ở Debug Mode\"}]},{\"type\":\"codeBlock\",\"attrs\":{\"language\":null},\"content\":[{\"type\":\"text\",\"text\":\"bash\"}]},{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"Sao chép Chỉnh sửa\"}]},{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"marks\":[{\"type\":\"code\"}],\"text\":\"node --inspect myServer.js \"}]},{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"Sau đó mở Chrome DevTools (chrome://inspect) để kiểm tra các \"},{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"Timers\"},{\"type\":\"text\",\"text\":\".\"}]}]}",
+      "content": "{\"type\":\"doc\",\"content\":[{\"type\":\"heading\",\"attrs\":{\"level\":2},\"content\":[{\"type\":\"text\",\"text\":\"✅ \"},{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"3. Dùng \"},{\"type\":\"text\",\"marks\":[{\"type\":\"code\"}],\"text\":\"setInterval()\"},{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\" với Debug Mode\"}]},{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"Bạn có thể bật \"},{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"Node.js Debug Mode\"},{\"type\":\"text\",\"text\":\" để kiểm tra các \"},{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"Timers đang hoạt động\"},{\"type\":\"text\",\"text\":\".\"}]},{\"type\":\"heading\",\"attrs\":{\"level\":3},\"content\":[{\"type\":\"text\",\"text\":\"📌 \"},{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"Chạy ứng dụng ở Debug Mode\"}]},{\"type\":\"codeBlock\",\"attrs\":{\"language\":null},\"content\":[{\"type\":\"text\",\"text\":\"bash\"}]},{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"Sao chép Chỉnh sửa 425435\"}]},{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"marks\":[{\"type\":\"code\"}],\"text\":\"node --inspect myServer.js \"}]},{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"Sau đó mở Chrome DevTools (chrome://inspect) để kiểm tra các \"},{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"Timers\"},{\"type\":\"text\",\"text\":\".\"}]}]}",
       "isPin": false,
-      "updateAt": "1740631832592",
+      "updateAt": 1741292685856,
       "closed": true
     },
     {
@@ -75,6 +75,33 @@
       "isPin": false,
       "updateAt": 1741290698695,
       "closed": true
+    },
+    {
+      "id": "N2ZjMTViN",
+      "title": "3241 2342 4234234",
+      "content": "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}",
+      "userId": 3,
+      "isPin": false,
+      "updateAt": 1741292615140,
+      "closed": false
+    },
+    {
+      "id": "YWEzNGE4Z",
+      "title": "32 432 4235254 4",
+      "content": "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"2351235 3252\"}]}]}",
+      "userId": 3,
+      "isPin": false,
+      "updateAt": 1741292619910,
+      "closed": false
+    },
+    {
+      "id": "OTg3ZDg1M",
+      "title": "3242343543543",
+      "content": "{\"type\":\"doc\",\"content\":[{\"type\":\"heading\",\"attrs\":{\"level\":1},\"content\":[{\"type\":\"text\",\"text\":\"324 14321421 44324\"}]},{\"type\":\"heading\",\"attrs\":{\"level\":3},\"content\":[{\"type\":\"text\",\"text\":\"retrewtret\"}]},{\"type\":\"heading\",\"attrs\":{\"level\":2},\"content\":[{\"type\":\"text\",\"text\":\"reterwtree retewtre\"}]}]}",
+      "userId": 3,
+      "isPin": false,
+      "updateAt": 1741292656642,
+      "closed": false
     }
   ],
   "user": [

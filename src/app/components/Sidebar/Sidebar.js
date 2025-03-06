@@ -15,7 +15,7 @@ import useSWR from 'swr';
 import Loading from '@/app/note/loading';
 
 export default function Sidebar({ note }) {
-  const { data, mutate } = useSWR('notes', fetchNotes, { revalidateOnFocus: true, fallbackData: note })
+  const { data, mutate } = useSWR('notes', fetchNotes)
   const router = useRouter();
 
   React.useEffect(() => {

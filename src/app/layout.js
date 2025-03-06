@@ -13,7 +13,7 @@ export default async function RootLayout({ children }) {
 
   return (
     <SWRProvider fallback={{
-      "/notes?_sort=updateAt&_order=DESC": notes,
+      "notes": notes,
       [`/user/${userId}`]: user
     }}>
       <AuthProvider userId={userId}>

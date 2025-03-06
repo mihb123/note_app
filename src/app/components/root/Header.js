@@ -11,7 +11,7 @@ import { mutate } from 'swr';
 function Header({ userId }) {
   const [open, setOpen] = useState(false)
   const { user, loggedIn, logout } = useAuth()
-  mutate(`user/${userId}`)
+  // mutate(`user/${userId}`)
   return (
     <>
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>

@@ -12,9 +12,9 @@ export default async function Layout({ children }) {
       <Providers>
         <Header />
         <DrawerHeader />
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex', mt: -2 }}>
           <Note />
-          <Box sx={{ flexGrow: 1, p: 3 }}>
+          <Box sx={{ flexGrow: 1, p: 2 }}>
             {children}
           </Box>
         </Box>

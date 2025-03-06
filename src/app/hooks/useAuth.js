@@ -9,7 +9,7 @@ import { SelectedItemProvider } from './useSelectedItem';
 const AuthContext = createContext(undefined)
 
 export function AuthProvider({ userId, children }) {
-  const { data, error, mutate } = useSWR(userId ? `/user/${userId}` : null, { suspense: true, fallbackData: [] }, { revalidateIfStale: false, revalidateOnFocus: false });
+  const { data, error, mutate } = useSWR(userId ? `/user/${userId}` : null, { suspense: true, }, { revalidateIfStale: false, revalidateOnFocus: false, revalidateOnReconnect: false });
 
   const loading = !data && !error
   const loggedIn = !error && data?.id
