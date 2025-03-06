@@ -8,21 +8,22 @@ import ListItemButton from '@mui/material/ListItemButton';
 import NoteCard from './NoteCard';
 import DrawerHeader from './DrawerHeader';
 import { useRouter } from "next/navigation";
-import { Button, ListItemText, Typography } from '@mui/material';
+import { Button, ListItemText, Skeleton, Typography } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { QuickUpdate } from '@/app/action';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { fetchNotes, QuickUpdate } from '@/app/action';
+import useSWR from 'swr';
+import Loading from '@/app/note/loading';
 
-export default function Sidebar(props) {
+export default function Sidebar({ data }) {
 
   const router = useRouter();
-  const data = props.data
+
   const openNotes = data?.filter(e => !e.closed)
   const [openData, setOpenData] = React.useState(openNotes)
   const closeNotes = data?.filter(e => e.closed)
   const [closeData, setCloseData] = React.useState(closeNotes)
-  const numberClose = closeData.length
-  const numberOpen = openData.length
+  const numberClose = closeData?.length
+  const numberOpen = openData?.length
   const [closeSide, setCloseSide] = React.useState(false)
 
   const pinData = openData?.filter(e => e.isPin)
@@ -62,15 +63,12 @@ export default function Sidebar(props) {
     QuickUpdate(note)
   }
 
-  // save local storage
+
   React.useEffect(() => {
-    if (typeof (Storage) !== 'undefined') {
-      localStorage.setItem("notes", JSON.stringify(data))
-      console.log('Trình duyệt của bạn hỗ trợ Storage');
-    } else {
-      //Nếu không hỗ trợ
-      alert('Trình duyệt của bạn không hỗ trợ Storage');
-    }
+    // if (typeof (Storage) !== 'undefined') {
+    //   localStorage.setItem("notes", JSON.stringify(data))
+    //   console.log('Trình duyệt của bạn hỗ trợ Storage');
+    // }
     setOpenData(openNotes)
     setCloseData(closeNotes)
   }, [data])
@@ -101,6 +99,7 @@ export default function Sidebar(props) {
     setOpen(false);
   };
 
+
   React.useEffect(() => {
     if (isResizing) {
       document.addEventListener("mousemove", handleMouseMove);
@@ -115,6 +114,8 @@ export default function Sidebar(props) {
       document.removeEventListener("mouseup", stopResizing);
     };
   }, [isResizing]);
+
+  if (data == undefined) return <Loading />
   return (
     <>
       <Drawer
@@ -181,13 +182,13 @@ export default function Sidebar(props) {
             </>
             :
             <>
-              {pinData.length != 0 &&
+              {pinData?.length != 0 &&
                 <>
                   <ListItem >
-                    <Typography color='secondary'>Pinned ({pinData.length})</Typography>
+                    <Typography color='secondary'>Pinned ({pinData?.length})</Typography>
                   </ListItem>
 
-                  {pinData.map((e, index) => (
+                  {pinData?.map((e, index) => (
                     <ListItem key={index} disablePadding>
                       <ListItemButton >
                         <NoteCard
@@ -201,12 +202,12 @@ export default function Sidebar(props) {
 
                 </>
               }
-              {unpin.length != 0 &&
+              {unpin?.length != 0 &&
                 <>
                   <ListItem>
-                    <Typography color='secondary'>Notes ({unpin.length})</Typography>
+                    <Typography color='secondary'>Notes ({unpin?.length})</Typography>
                   </ListItem>
-                  {unpin.map((e, index) => (
+                  {unpin?.map((e, index) => (
                     <ListItem key={index} disablePadding>
                       <ListItemButton >
                         <NoteCard

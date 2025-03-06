@@ -2,12 +2,34 @@
 import { redirect } from 'next/navigation'
 import { revalidateTag } from 'next/cache'
 
-const url = process.env.SERVER;
+const url = process.env.NEXT_PUBLIC_SERVER
 const urlNote = `${url}/notes`;
 
 export async function fetchNotes() {
   try {
     const response = await fetch(`${urlNote}?_sort=updateAt&_order=DESC`, {
+      method: "GET",
+      next: { tags: ['note'] }, // Gán tag 'note'
+      headers: {
+        "Content-Type": "application/json",
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    })
+
+    if (response.ok) {
+
+      return await response.json();
+    } else {
+      console.error('Failed to fetch the note.');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+export async function fetchNoteId(id) {
+  try {
+    const response = await fetch(`${urlNote}/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -17,35 +39,13 @@ export async function fetchNotes() {
 
     if (response.ok) {
       return await response.json();
-      console.log(`Fetch successfully`);
     } else {
-      console.error('Failed to fetch the note.');
+      console.error('Failed to fetch the noteID.');
+      return []
     }
   } catch (error) {
     console.error('Error:', error);
-  }
-}
-
-export async function fetchInfo() {
-  try {
-    const response = await fetch(`${url}/info`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-      },
-    })
-
-    if (response.ok) {
-      console.log(`Fetch successfully`);
-      const result = await response.json()
-      return result;
-
-    } else {
-      console.error('Failed to fetch the note.');
-    }
-  } catch (error) {
-    console.error('Error:', error);
+    throw new Error("Failed to fetch the noteID.");
   }
 }
 
@@ -123,9 +123,11 @@ export async function UpdateNoteAction(formData) {
 }
 
 export async function QuickUpdate(data) {
+
   try {
     const res = await fetch(`${urlNote}/${data.id}`, {
       method: "PUT",
+      next: { tags: ['note'] },
       body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",

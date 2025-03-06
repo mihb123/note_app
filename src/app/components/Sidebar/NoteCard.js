@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import CardActionArea from '@mui/material/CardActionArea';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useRouter } from "next/navigation";
-import DeleteConfirm from '../DeleteConfirm';
+import DeleteConfirm from './DeleteConfirm';
 import PushPinIcon from '@mui/icons-material/PushPin';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -13,6 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 import ReplayIcon from '@mui/icons-material/Replay';
 import { styled } from '@mui/material/styles';
 import { getContent, GetTime } from '@/app/utils/function';
+import { useSelectedItem } from '@/app/hooks/useSelectedItem';
 
 export default function NoteCard({ data, HandlePinAction, CloseAction, closeSide }) {
   const updateAt = data?.updateAt
@@ -22,9 +23,10 @@ export default function NoteCard({ data, HandlePinAction, CloseAction, closeSide
   const handleClose = () => setHide("none");
   const [timeAgo, setTimeAgo] = React.useState("Chưa cập nhật");
   const handleNoteClick = (id) => {
+    // setSelectedItem(id)
     router.push(`/note/${id}`); // Thay đổi URL mà không reload
   };
-  console.log("render NoteCard")
+  // const { setSelectedItem } = useSelectedItem()
 
   const { newContent, checkedTask, allTask } = getContent(data)
 

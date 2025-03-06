@@ -16,6 +16,8 @@ import { styled } from '@mui/material/styles';
 import ForgotPassword from '@/app/components/auth/ForgotPassword';
 import ColorModeSelect from '@/app/components/root/ColorModeSelect';
 import { GoogleIcon } from '@/app/components/auth/CustomIcons';
+import { useAuth } from '@/app/hooks/useAuth';
+import { redirect } from 'next/navigation'
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -65,6 +67,7 @@ export default function SignIn(props) {
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [open, setOpen] = React.useState(false);
+  const { login } = useAuth()
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -73,17 +76,22 @@ export default function SignIn(props) {
   const handleClose = () => {
     setOpen(false);
   };
+  // const router = useRouter()
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     if (emailError || passwordError) {
-      event.preventDefault();
       return;
     }
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const email = data.get('email');
+    const password = data.get('password').toString();
+    const result = await login(email, password);
+
+    if (result) {
+      // Chuyển hướng đến trang chủ
+      redirect('/')
+    }
   };
 
   const validateInputs = () => {

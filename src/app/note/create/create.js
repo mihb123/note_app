@@ -4,41 +4,60 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import { Button } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
-import { createNote } from '@/app/action'
+import { createNote, fetchNotes } from '@/app/action'
 import { TiptapEditor, Editor } from '../../components/Tiptap/TiptapEditor';
 import { useEditorState } from '@tiptap/react'
+import { useAuth } from '@/app/hooks/useAuth';
+import useSWR, { mutate } from 'swr';
 
 export default function CreateNote() {
+  // const { data, mutate } = useSWR('notes', fetchNotes)
 
   const editor = Editor()
-  const now = new Date()
-
   const result = useEditorState({
     editor,
     selector: () => editor?.getJSON(),
   })
+  const { userId } = useAuth()
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-
-    const formData = new FormData(e.currentTarget);
-    const pin = formData.get('isPin') === 'true'
-    const close = formData.get('closed') === 'true'
-
-    const data = {
-      title: formData.get('title'),
-      content: formData.get('content'),
-      isPin: pin,
-      updateAt: formData.get('updateAt'),
-      closed: close
+  const handleSubmit = async () => {
+    const now = new Date()
+    const title = document.getElementById('Title').value
+    const newData = {
+      title: title,
+      content: JSON.stringify(result),
+      userId: userId || null,
+      isPin: false,
+      updateAt: now.getTime(),
+      closed: false
     }
-    await createNote(data)
-    editor.commands.setContent("")
-    document.getElementById('Title').value = ''
+    mutate(
+      'notes',
+      (currentNotes = []) => {
+        return [...currentNotes, newData]; // Cập nhật ngay UI
+      },
+      {
+        optimisticData: (currentNotes = []) => [...currentNotes, newData], // Cập nhật tức thì
+        rollbackOnError: true, // Quay lại dữ liệu cũ nếu có lỗi
+        populateCache: true, // Lưu vào cache SWR
+        revalidate: false, // Không fetch lại ngay lập tức
+      }
+    );
+
+    try {
+      await createNote(newData); // Gửi lên server
+      await mutate('notes'); // Sau khi cập nhật xong, fetch lại dữ liệu mới nhất
+    } catch (error) {
+      console.error(error);
+    }
+    finally {
+      editor.commands.setContent("")
+      document.getElementById('Title').value = ''
+    }
   }
   return (
     <>
-      <Box component='form' onSubmit={handleSubmit} sx={{ width: "100%", mb: 2 }}>
+      <Box sx={{ width: "100%", mb: 2 }}>
         <TextField
           fullWidth
           multiline
@@ -51,18 +70,14 @@ export default function CreateNote() {
           placeholder='Leave a title'
           sx={{ mb: 2 }}
         />
-        <input name='content' value={JSON.stringify(result)} sx={{ mb: 2 }} type='hidden' />
+
         <TiptapEditor
           editor={editor}
         />
 
-        <input name='isPin' value={false} type='hidden' sx={{ mb: 2 }} />
-        <input name='closed' value={false} type='hidden' sx={{ mb: 2 }} />
-        <input name='updateAt' value={now.getTime()} type='hidden' sx={{ mb: 2 }} />
-
         <Button
           variant="contained"
-          type='submit'
+          onClick={() => handleSubmit()}
           endIcon={<SendIcon />}
         >Save</Button>
       </Box >

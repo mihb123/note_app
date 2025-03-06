@@ -1,11 +1,16 @@
-'use client'
+"use client";
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import ColorModeSelect from './ColorModeSelect';
-import { Button, List } from '@mui/material';
+import { Button, List, MenuItem, Select } from '@mui/material';
+import { useAuth } from '@/app/hooks/useAuth';
+import { useState } from 'react';
 
-function Header() {
+function Header({ userId }) {
+  const [open, setOpen] = useState(false)
+  const { user, loggedIn, logout } = useAuth()
+
   return (
     <>
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
@@ -14,16 +19,26 @@ function Header() {
             App Note
           </Typography>
           <List sx={{ marginLeft: "auto" }}>
-            <Button
-              sx={{ mr: 1 }}
-              href="/sign-in"
-            >Login
-            </Button>
+            {loggedIn ? <>
+              <Button
+                sx={{ mr: 1 }}
+                onClick={() => {
+                  setOpen(!open)
+                  logout()
+                }}>
+                Hi, {user.name}
+              </Button>
+            </> :
+              <Button
+                sx={{ mr: 1 }}
+                href="/sign-in"
+              >Login
+              </Button>
+            }
             <ColorModeSelect />
           </List>
-
         </Toolbar>
-      </AppBar>
+      </AppBar>,
     </>
   );
 }

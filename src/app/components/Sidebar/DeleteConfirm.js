@@ -6,7 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { deleteNote } from '@/app/action'
-import { red } from "./root/themePrimitives"
+import { red } from "../root/themePrimitives"
 import { useTheme } from '@mui/material/styles';
 
 export default function DeleteConfirm(props) {

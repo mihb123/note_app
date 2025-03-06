@@ -1,12 +1,12 @@
-import 'server-only'
+'use server'
 import { SignJWT, jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
-import { cache } from 'react';
 
 const secretKey = process.env.SESSION_SECRET
 const encodedKey = new TextEncoder().encode(secretKey)
 
 export async function encrypt(payload) {
+  if (!payload) return
   return new SignJWT(payload)
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
@@ -16,6 +16,7 @@ export async function encrypt(payload) {
 
 export async function decrypt(session) {
   try {
+    if (!session) return
     const { payload } = await jwtVerify(session, encodedKey, {
       algorithms: ['HS256'],
     })
@@ -26,9 +27,9 @@ export async function decrypt(session) {
   }
 }
 
-export async function createSession(name, email) {
+export async function createSession(id) {
   const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
-  const session = await encrypt({ name, email })
+  const session = await encrypt({ id: id })
   const cookieStore = await cookies()
 
   cookieStore.set('session', session, {
@@ -66,12 +67,10 @@ export const verifySession = async () => {
   const cookie = (await cookies()).get('session')?.value
   const session = await decrypt(cookie)
 
-  if (!session) return
-
-  // if (!session?.email) {
-  //   redirect('/sign-in')
-  // }
-
-  return { isAuth: true, email: session.email, name: session.name }
+  if (!session) return false
+  const id = session?.id
+  return id
 }
+
+
 

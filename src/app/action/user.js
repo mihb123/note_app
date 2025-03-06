@@ -1,9 +1,10 @@
 import { verifySession } from "../utils/session"
 import { cache } from 'react';
 
-const url = process.env.SERVER;
+
 
 export const getUser = cache(async () => {
+  const url = process.env.SERVER;
   const session = await verifySession()
   if (!session) return null
   const email = session.email
