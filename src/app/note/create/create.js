@@ -23,13 +23,17 @@ export default function CreateNote() {
   const handleSubmit = async () => {
     const now = new Date()
     const title = document.getElementById('Title').value
+    const uuid = crypto.randomUUID();
+    const shortId = btoa(uuid).replace(/[^a-zA-Z0-9]/g, '').slice(0, 9);
     const newData = {
+      id: shortId,
       title: title,
       content: JSON.stringify(result),
       userId: userId || null,
       isPin: false,
       updateAt: now.getTime(),
       closed: false
+
     }
     mutate(
       'notes',
@@ -44,9 +48,10 @@ export default function CreateNote() {
       }
     );
 
+
     try {
       await createNote(newData); // Gửi lên server
-      await mutate('notes'); // Sau khi cập nhật xong, fetch lại dữ liệu mới nhất
+      await mutate('notes');
     } catch (error) {
       console.error(error);
     }

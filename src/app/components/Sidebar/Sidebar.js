@@ -71,8 +71,9 @@ export default function Sidebar({ data }) {
     // }
     setOpenData(openNotes)
     setCloseData(closeNotes)
-  }, [data])
 
+  }, [data])
+  console.log("unpin", unpin)
   const [drawerWidth, setDrawerWidth] = React.useState(300);
   const [isResizing, setIsResizing] = React.useState(false);
   const handleMouseMove = (event) => {
