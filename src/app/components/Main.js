@@ -7,6 +7,8 @@ import { Button } from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
 import { TiptapEditor, Editor } from './Tiptap/TiptapEditor';
 import { getContent } from '@/app/utils/function';
+import { mutate } from 'swr';
+import { useSnackbar } from 'notistack';
 
 export default function Main({ item }) {
   const { id, title, content, isPin, updateAt, closed } = item;
@@ -25,14 +27,43 @@ export default function Main({ item }) {
       setHide('flex')
     }
   })
+  const { enqueueSnackbar } = useSnackbar();
 
-  function handleUpdate() {
+  async function handleUpdate() {
+    // await mutate('notes');
     const now = new Date()
     const result = editor?.getJSON()
-    item.content = JSON.stringify(result)
-    item.title = titleValue
-    item.updateAt = now.getTime()
-    QuickUpdate(item)
+    // item.content = JSON.stringify(result)
+    // item.title = titleValue
+    // item.updateAt = now.getTime()
+    const newItem = {
+      ...item,
+      title: titleValue,
+      content: JSON.stringify(result),
+      updateAt: now.getTime(),
+    }
+    mutate(
+      'notes',
+      (notes = []) => (notes.map(e => (e.id === newItem.id) ? newItem : e)),
+      {
+        optimisticData: (notes = []) => (notes.map(e => (e.id === newItem.id) ? newItem : e)),
+        rollbackOnError: true, // Quay lại dữ liệu cũ nếu có lỗi
+        populateCache: true, // Lưu vào cache SWR
+        revalidate: false, // Không fetch lại ngay lập tức
+      }
+    );
+
+    try {
+      await QuickUpdate(newItem); // Gửi lên server
+      await mutate('notes');
+      await mutate(`notes/${item.id}`);
+
+    } catch (error) {
+      console.error(error);
+      enqueueSnackbar("Fail to update note", { variant: "error" });
+    }
+
+
   }
   return (
     <>

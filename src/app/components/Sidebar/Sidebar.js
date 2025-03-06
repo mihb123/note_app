@@ -14,20 +14,29 @@ import { fetchNotes, QuickUpdate } from '@/app/action';
 import useSWR from 'swr';
 import Loading from '@/app/note/loading';
 
-export default function Sidebar({ data }) {
-
+export default function Sidebar({ note }) {
+  const { data, mutate } = useSWR('notes', fetchNotes, { revalidateOnFocus: true, fallbackData: note })
   const router = useRouter();
 
-  const openNotes = data?.filter(e => !e.closed)
-  const [openData, setOpenData] = React.useState(openNotes)
-  const closeNotes = data?.filter(e => e.closed)
-  const [closeData, setCloseData] = React.useState(closeNotes)
-  const numberClose = closeData?.length
-  const numberOpen = openData?.length
+  React.useEffect(() => {
+    mutate('notes')
+  }, [note])
+  // console.log("data", data)
+  let openNotes, closeNotes
+  if (typeof data != 'object') {
+    openNotes = note?.filter(e => !e.closed)
+    closeNotes = note?.filter(e => e.closed)
+  } else {
+    openNotes = data?.filter(e => !e.closed)
+    closeNotes = data?.filter(e => e.closed)
+  }
+
+  const numberClose = closeNotes?.length
+  const numberOpen = openNotes?.length
   const [closeSide, setCloseSide] = React.useState(false)
 
-  const pinData = openData?.filter(e => e.isPin)
-  const unpin = openData?.filter(e => !e.isPin)
+  const pinData = openNotes?.filter(e => e.isPin)
+  const unpin = openNotes?.filter(e => !e.isPin)
   const [pinnedData, setPinnedData] = React.useState(pinData)
   const [unpinnedData, setUnpinnedData] = React.useState(unpin)
 
@@ -50,30 +59,33 @@ export default function Sidebar({ data }) {
     QuickUpdate(note)
   }
 
-  function HandleCloseAction(note) {
-    if (note.closed) {
-      setOpenData(prev => [...prev, note])
-      setCloseData(prev => prev.filter(n => n.id !== note.id))
-      note.closed = false;
-    } else {
-      setOpenData(prev => prev.filter(n => n.id !== note.id))
-      setCloseData(prev => [...prev, note])
-      note.closed = true;
-    }
-    QuickUpdate(note)
+  async function HandleCloseAction(note) {
+    note.closed = !note.closed;
+
+    mutate((data) => {
+      if (!data) return note.map((e) =>
+        e.id === note.id ? { ...e, closed: note.closed } : e
+      );
+
+      return data.map((e) =>
+        e.id === note.id ? { ...e, closed: note.closed } : e
+      );
+    },
+      {
+        // optimisticData: (currentNotes) => {
+        //   if (!currentNotes) return [];
+        //   return currentNotes.map((e) =>
+        //     e.id === note.id ? { ...e, closed: note.closed } : e
+        //   );
+        // },
+        // populateCache: true,
+        revalidate: false,
+      })
+
+    await QuickUpdate(note)
+
   }
 
-
-  React.useEffect(() => {
-    // if (typeof (Storage) !== 'undefined') {
-    //   localStorage.setItem("notes", JSON.stringify(data))
-    //   console.log('Trình duyệt của bạn hỗ trợ Storage');
-    // }
-    setOpenData(openNotes)
-    setCloseData(closeNotes)
-
-  }, [data])
-  console.log("unpin", unpin)
   const [drawerWidth, setDrawerWidth] = React.useState(300);
   const [isResizing, setIsResizing] = React.useState(false);
   const handleMouseMove = (event) => {
@@ -116,7 +128,6 @@ export default function Sidebar({ data }) {
     };
   }, [isResizing]);
 
-  if (data == undefined) return <Loading />
   return (
     <>
       <Drawer
@@ -164,11 +175,10 @@ export default function Sidebar({ data }) {
                 </Button>
               </>
             }
-
           </ListItem>
           {closeSide ?
             <>
-              {closeData.map((e, index) => (
+              {closeNotes.map((e, index) => (
                 <ListItem key={index} disablePadding>
                   <ListItemButton >
                     <NoteCard

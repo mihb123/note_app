@@ -4,18 +4,21 @@ import DrawerHeader from "../components/Sidebar/DrawerHeader";
 import Note from "@/app/note/Note";
 import Box from '@mui/material/Box';
 import useSWR, { SWRConfig } from 'swr'
+import { Providers } from "@/app/components/root/Provider";
 
 export default async function Layout({ children }) {
   return (
     <>
-      <Header />
-      <DrawerHeader />
-      <Box sx={{ display: 'flex' }}>
-        <Note />
-        <Box sx={{ flexGrow: 1, p: 3 }}>
-          {children}
+      <Providers>
+        <Header />
+        <DrawerHeader />
+        <Box sx={{ display: 'flex' }}>
+          <Note />
+          <Box sx={{ flexGrow: 1, p: 3 }}>
+            {children}
+          </Box>
         </Box>
-      </Box>
+      </Providers>
     </>
   );
 }

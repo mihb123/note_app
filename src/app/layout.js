@@ -25,6 +25,6 @@ export default async function RootLayout({ children }) {
           </html>
         </AppTheme>
       </AuthProvider>
-    </SWRProvider>
+    </SWRProvider >
   )
 }

@@ -7,7 +7,6 @@ import { navigationCustomizations } from './customizations/navigation';
 import { dataDisplayCustomizations } from './customizations/dataDisplay';
 import { surfacesCustomizations } from './customizations/surfaces';
 import { colorSchemes, typography, shadows, shape } from './themePrimitives';
-
 function AppTheme(props) {
 
   const { children, disableCustomTheme, themeComponents } = props;
@@ -39,7 +38,9 @@ function AppTheme(props) {
   }
   return (
     <ThemeProvider theme={theme} disableTransitionOnChange>
+
       {children}
+
     </ThemeProvider>
   );
 }

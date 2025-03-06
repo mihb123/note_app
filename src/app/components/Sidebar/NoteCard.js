@@ -67,7 +67,7 @@ export default function NoteCard({ data, HandlePinAction, CloseAction, closeSide
     }, 1000)
     return () => clearInterval(interval);
   })
-
+  // console.log("render NoteCard")
   return (
     <>
       <Card sx={{ position: 'relative', width: '100%' }}

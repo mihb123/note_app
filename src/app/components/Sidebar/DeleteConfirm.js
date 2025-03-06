@@ -8,14 +8,36 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { deleteNote } from '@/app/action'
 import { red } from "../root/themePrimitives"
 import { useTheme } from '@mui/material/styles';
+import { mutate } from 'swr';
+import { useSnackbar } from 'notistack';
 
 export default function DeleteConfirm(props) {
   const { id, title, open, setOpen } = props
+  const { enqueueSnackbar } = useSnackbar();
 
-  const handleDelete = (id) => {
-    deleteNote(id)
+  const handleDelete = async (id) => {
+    mutate(
+      'notes',
+      //remote element include id     
+      (currentNotes = []) => currentNotes.filter(e => e.id !== id),
+      {
+        optimisticData: (currentNotes = []) => currentNotes.filter(e => e.id !== id), // Cập nhật tức thì
+        rollbackOnError: true, // Quay lại dữ liệu cũ nếu có lỗi
+        populateCache: true, // Lưu vào cache SWR
+        revalidate: false, // Không fetch lại ngay lập tức
+      }
+    );
     setOpen(false);
-    // router.push("/note/create")
+
+    try {
+      await deleteNote(id) // Gửi lên server
+      await mutate('notes');
+      enqueueSnackbar("Delete successfully", { variant: "success" });
+    } catch (error) {
+      console.error(error);
+      enqueueSnackbar("Fail to delete note", { variant: "error" });
+    }
+
   };
 
   return (
