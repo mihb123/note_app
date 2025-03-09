@@ -33,9 +33,7 @@ export default function NoteCard({ data, HandlePinAction, CloseAction, closeSide
   const handleNoteClick = (id) => {
     router.push(`/note/${id}`);
   };
-  if (data == undefined) {
-    console.log('data is undefined')
-  }
+
   const { newContent, checkedTask, allTask } = getContent(data)
 
   const [open, setOpen] = React.useState(false);

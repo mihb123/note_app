@@ -35,6 +35,10 @@ const NoteSection = ({ title, count, notes, onPin, onClose }) => {
 export default function Sidebar({ userId, note }) {
   const router = useRouter();
   const { data = note, mutate } = useSWR('notes', () => fetchNotes(userId));
+  if (data == undefined) {
+    console.log('data is undefined')
+  }
+
   const [drawerWidth, setDrawerWidth] = React.useState(300);
   const [isResizing, setIsResizing] = React.useState(false);
   const [showClosed, setShowClosed] = React.useState(false);

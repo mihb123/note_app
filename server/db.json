@@ -118,21 +118,12 @@
       "closed": false
     },
     {
-      "id": "YWQ1OWU2Z",
-      "title": "5retretretrew",
-      "content": "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"456456456\"}]}]}",
-      "userId": 3,
-      "isPin": false,
-      "updateAt": 1741303965528,
-      "closed": false
-    },
-    {
       "id": "NDljMTJjY",
-      "title": "Chứng khoán abc",
+      "title": "Chứng khoán abc ",
       "content": "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"Bàn về diễn biến tích cực của thị trường, \"},{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"ông Trần Đức Anh – Giám đốc Vĩ mô và Chiến lược thị trường Chứng khoán KBSV \"},{\"type\":\"text\",\"text\":\"cho rằng thị trường tài chính đang có nhiều đồn đoán về khả năng Ngân hàng Nhà nước (NHNN) có thể điều chỉnh lãi suất OMO nhằm hỗ trợ thanh khoản. Tuy nhiên, đến thời điểm hiện tại, NHNN chưa có thông báo chính thức nào về việc giảm lãi suất trên thị trường mở. 00090\"}]},{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"Dù vậy, trước đó, NHNN cũng có động thái hạ dần từ 4,0% xuống 3,1%/năm trước khi quyết định dừng hoàn toàn việc phát hành tín phiếu từ ngày 5/3/2025. Qua đó phát tín hiệu mạnh mẽ và tích cực về định hướng của NHNN trong việc kéo giảm mặt bằng lãi suất thị trường xuống, tạo điều kiện thuận lợi cho thị trường. Động thái của NHNN diễn ra trong bối cảnh áp lực tỷ giá đang có dấu hiệu hạ nhiệt, đồng DXY cũng đã lao dốc trong thời gian gần đây.\"}]},{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"Một yếu tố nữa giúp tâm lý thị trường cải thiện là sự trở lại của dòng vốn ngoại khi bất ngờ mua ròng hơn 400 tỷ trên HoSE, chấm dứt chuỗi bán ròng nhiều phiên liên tiếp. Dù còn quá sớm để nhận định xu hướng bán ròng của khối ngoại đã đảo chiều, song động thái này cũng phần nào “cởi trói” tâm lý thận trọng của nhà đầu tư trong nước. \"}]}]}",
       "userId": 3,
       "isPin": false,
-      "updateAt": 1741506669286,
+      "updateAt": 1741510627235,
       "closed": false
     },
     {
@@ -336,29 +327,65 @@
     {
       "id": "wfyl3wzv9",
       "title": "VBA commands",
-      "content": "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"Active Cell vs Selection765\"}]},{\"type\":\"bulletList\",\"content\":[{\"type\":\"listItem\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"Single cell\"}]}]}]},{\"type\":\"codeBlock\",\"attrs\":{\"language\":null},\"content\":[{\"type\":\"text\",\"text\":\"Range(“A1”).Value = ”1st”\"}]},{\"type\":\"bulletList\",\"content\":[{\"type\":\"listItem\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"Single range using a colon\"}]}]}]},{\"type\":\"codeBlock\",\"attrs\":{\"language\":null},\"content\":[{\"type\":\"text\",\"text\":\"Range(“A2:C2”).Value = “2nd”\"}]},{\"type\":\"bulletList\",\"content\":[{\"type\":\"listItem\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"Multiple ranges separated by a comma\"}]}]}]},{\"type\":\"codeBlock\",\"attrs\":{\"language\":null},\"content\":[{\"type\":\"text\",\"text\":\"Range(“A3:C3,E3:F3”).Value = “3rd”\"}]},{\"type\":\"bulletList\",\"content\":[{\"type\":\"listItem\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"Multiple cells separated by a quotation marks and a comma\"}]}]}]},{\"type\":\"codeBlock\",\"attrs\":{\"language\":null},\"content\":[{\"type\":\"text\",\"text\":\"Range(“A4,C4”).Value = “4th”\"}]},{\"type\":\"bulletList\",\"content\":[{\"type\":\"listItem\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"Single range by specifying the start cell and end cell\"}]}]}]},{\"type\":\"codeBlock\",\"attrs\":{\"language\":null},\"content\":[{\"type\":\"text\",\"text\":\"Range(“A4”,”C4”) = “5th”\"}]},{\"type\":\"bulletList\",\"content\":[{\"type\":\"listItem\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"Single range by concatenating the column letter and row number. This is useful when using a loop with a variable in place of the row number.\"}]}]}]},{\"type\":\"codeBlock\",\"attrs\":{\"language\":null},\"content\":[{\"type\":\"text\",\"text\":\"Range(“A” & 6,”C” & 6) = “6th”\"}]},{\"type\":\"bulletList\",\"content\":[{\"type\":\"listItem\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"Using the Cells property of the Range object by specifying the row number and column number. This is especially useful when looping through many columns and different rows.\"}]}]}]},{\"type\":\"codeBlock\",\"attrs\":{\"language\":null},\"content\":[{\"type\":\"text\",\"text\":\"Range(Cells(6,1), Cells(6,3)).Value = “6th”\"}]},{\"type\":\"bulletList\",\"content\":[{\"type\":\"listItem\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"Highlighting a range and referencing a specific cell within that range.\"}]}]}]},{\"type\":\"codeBlock\",\"attrs\":{\"language\":null},\"content\":[{\"type\":\"text\",\"text\":\"Range(“A4:C7”).Cells(4,2)).Value = “7th”\"}]},{\"type\":\"paragraph\"},{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"OFFSET Function\"}]},{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"The OFFSET function allows you to change a value of a cell by specifying a starting point and the number of rows and columns to offset from it. This is done using the Offset property of the range.\"}]},{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"Syntax is as follows: Offset(number of rows, number of columns)\"}]},{\"type\":\"bulletList\",\"content\":[{\"type\":\"listItem\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"Offset a cell\"}]}]}]},{\"type\":\"codeBlock\",\"attrs\":{\"language\":null},\"content\":[{\"type\":\"text\",\"text\":\"Range(“A1”).Offset(7,2)).Value = “8th”\"}]},{\"type\":\"bulletList\",\"content\":[{\"type\":\"listItem\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"Offset a range\"}]}]}]},{\"type\":\"codeBlock\",\"attrs\":{\"language\":null},\"content\":[{\"type\":\"text\",\"text\":\"Range(“A1”).Offset(7,2)).Range(“A1:A4”).Value = “8th”\"}]},{\"type\":\"codeBlock\",\"attrs\":{\"language\":null},\"content\":[{\"type\":\"text\",\"text\":\"Range(“A1:B1”).Offset(8,1)).Value = “9th”\"}]}]}",
+      "content": "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"Active Cell vs Selection765\"}]},{\"type\":\"bulletList\",\"content\":[{\"type\":\"listItem\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"Single cell\"}]}]}]},{\"type\":\"codeBlock\",\"attrs\":{\"language\":null},\"content\":[{\"type\":\"text\",\"text\":\"Range(“A1”).Value = ”1st”\"}]},{\"type\":\"bulletList\",\"content\":[{\"type\":\"listItem\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"Single range using a colon\"}]}]}]},{\"type\":\"codeBlock\",\"attrs\":{\"language\":null},\"content\":[{\"type\":\"text\",\"text\":\"Range(“A2:C2”).Value = “2nd”\"}]},{\"type\":\"bulletList\",\"content\":[{\"type\":\"listItem\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"Multiple ranges separated by a comma\"}]}]}]},{\"type\":\"codeBlock\",\"attrs\":{\"language\":null},\"content\":[{\"type\":\"text\",\"text\":\"Range(“A3:C3,E3:F3”).Value = “3rd”\"}]},{\"type\":\"bulletList\",\"content\":[{\"type\":\"listItem\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"Multiple cells separated by a quotation marks and a comma\"}]}]}]},{\"type\":\"codeBlock\",\"attrs\":{\"language\":null},\"content\":[{\"type\":\"text\",\"text\":\"Range(“A4,C4”).Value = “4th”\"}]},{\"type\":\"bulletList\",\"content\":[{\"type\":\"listItem\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"Single range by specifying the start cell and end cell1\"}]}]}]},{\"type\":\"codeBlock\",\"attrs\":{\"language\":null},\"content\":[{\"type\":\"text\",\"text\":\"Range(“A4”,”C4”) = “5th”\"}]},{\"type\":\"bulletList\",\"content\":[{\"type\":\"listItem\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"Single range by concatenating the column letter and row number. This is useful when using a loop with a variable in place of the row number.\"}]}]}]},{\"type\":\"codeBlock\",\"attrs\":{\"language\":null},\"content\":[{\"type\":\"text\",\"text\":\"Range(“A” & 6,”C” & 6) = “6th”\"}]},{\"type\":\"bulletList\",\"content\":[{\"type\":\"listItem\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"Using the Cells property of the Range object by specifying the row number and column number. This is especially useful when looping through many columns and different rows.\"}]}]}]},{\"type\":\"codeBlock\",\"attrs\":{\"language\":null},\"content\":[{\"type\":\"text\",\"text\":\"Range(Cells(6,1), Cells(6,3)).Value = “6th”\"}]},{\"type\":\"bulletList\",\"content\":[{\"type\":\"listItem\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"Highlighting a range and referencing a specific cell within that range.\"}]}]}]},{\"type\":\"codeBlock\",\"attrs\":{\"language\":null},\"content\":[{\"type\":\"text\",\"text\":\"Range(“A4:C7”).Cells(4,2)).Value = “7th”\"}]},{\"type\":\"paragraph\"},{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"OFFSET Function\"}]},{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"The OFFSET function allows you to change a value of a cell by specifying a starting point and the number of rows and columns to offset from it. This is done using the Offset property of the range.\"}]},{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"Syntax is as follows: Offset(number of rows, number of columns)\"}]},{\"type\":\"bulletList\",\"content\":[{\"type\":\"listItem\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"Offset a cell\"}]}]}]},{\"type\":\"codeBlock\",\"attrs\":{\"language\":null},\"content\":[{\"type\":\"text\",\"text\":\"Range(“A1”).Offset(7,2)).Value = “8th”\"}]},{\"type\":\"bulletList\",\"content\":[{\"type\":\"listItem\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"marks\":[{\"type\":\"bold\"}],\"text\":\"Offset a range\"}]}]}]},{\"type\":\"codeBlock\",\"attrs\":{\"language\":null},\"content\":[{\"type\":\"text\",\"text\":\"Range(“A1”).Offset(7,2)).Range(“A1:A4”).Value = “8th”\"}]},{\"type\":\"codeBlock\",\"attrs\":{\"language\":null},\"content\":[{\"type\":\"text\",\"text\":\"Range(“A1:B1”).Offset(8,1)).Value = “9th”\"}]}]}",
       "userId": 3,
       "isPin": true,
-      "updateAt": 1741505564207,
+      "updateAt": 1741514538647,
       "closed": false
     },
     {
-      "id": "ymbf09oum",
-      "title": "0000 1111",
-      "content": "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"gfhgfhgfhfg8 56456\"}]},{\"type\":\"table\",\"content\":[{\"type\":\"tableRow\",\"content\":[{\"type\":\"tableHeader\",\"attrs\":{\"colspan\":1,\"rowspan\":1,\"colwidth\":null},\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"4364363\"}]}]},{\"type\":\"tableHeader\",\"attrs\":{\"colspan\":1,\"rowspan\":1,\"colwidth\":null},\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"4364364436\"}]}]},{\"type\":\"tableHeader\",\"attrs\":{\"colspan\":1,\"rowspan\":1,\"colwidth\":null},\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"4634643\"}]}]}]},{\"type\":\"tableRow\",\"content\":[{\"type\":\"tableCell\",\"attrs\":{\"colspan\":1,\"rowspan\":1,\"colwidth\":null},\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"436436\"}]}]},{\"type\":\"tableCell\",\"attrs\":{\"colspan\":1,\"rowspan\":1,\"colwidth\":null},\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"43634634\"}]}]},{\"type\":\"tableCell\",\"attrs\":{\"colspan\":1,\"rowspan\":1,\"colwidth\":null},\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"34643643\"}]}]}]},{\"type\":\"tableRow\",\"content\":[{\"type\":\"tableCell\",\"attrs\":{\"colspan\":1,\"rowspan\":1,\"colwidth\":null},\"content\":[{\"type\":\"paragraph\"}]},{\"type\":\"tableCell\",\"attrs\":{\"colspan\":1,\"rowspan\":1,\"colwidth\":null},\"content\":[{\"type\":\"paragraph\"}]},{\"type\":\"tableCell\",\"attrs\":{\"colspan\":1,\"rowspan\":1,\"colwidth\":null},\"content\":[{\"type\":\"paragraph\"}]}]}]}]}",
-      "userId": 3,
-      "isPin": false,
-      "updateAt": 1741506225015,
-      "closed": true
-    },
-    {
       "id": "zhqzbk9ox",
-      "title": "0065765 74765 7657",
+      "title": "0065765 74765 7657111",
       "content": "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"657  765 7657657567\"}]}]}",
       "userId": 3,
       "isPin": false,
-      "updateAt": 1741507859520,
+      "updateAt": 1741510681621,
       "closed": true
+    },
+    {
+      "id": "rwnl3u1qz",
+      "title": "32432432423",
+      "content": "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}",
+      "userId": 3,
+      "isPin": false,
+      "updateAt": 1741510692813,
+      "closed": false
+    },
+    {
+      "id": "af6tlpfsq",
+      "title": "21321312 2312312",
+      "content": "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}",
+      "userId": 3,
+      "isPin": false,
+      "updateAt": 1741510698053,
+      "closed": false
+    },
+    {
+      "id": "pcl3ibp9d",
+      "title": "5435435435",
+      "content": "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"},{\"type\":\"table\",\"content\":[{\"type\":\"tableRow\",\"content\":[{\"type\":\"tableHeader\",\"attrs\":{\"colspan\":1,\"rowspan\":1,\"colwidth\":null},\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"abcd\"}]}]},{\"type\":\"tableHeader\",\"attrs\":{\"colspan\":1,\"rowspan\":1,\"colwidth\":null},\"content\":[{\"type\":\"paragraph\"}]},{\"type\":\"tableHeader\",\"attrs\":{\"colspan\":1,\"rowspan\":1,\"colwidth\":null},\"content\":[{\"type\":\"paragraph\"}]}]},{\"type\":\"tableRow\",\"content\":[{\"type\":\"tableCell\",\"attrs\":{\"colspan\":1,\"rowspan\":1,\"colwidth\":null},\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"123\"}]}]},{\"type\":\"tableCell\",\"attrs\":{\"colspan\":1,\"rowspan\":1,\"colwidth\":null},\"content\":[{\"type\":\"paragraph\"}]},{\"type\":\"tableCell\",\"attrs\":{\"colspan\":1,\"rowspan\":1,\"colwidth\":null},\"content\":[{\"type\":\"paragraph\"}]}]},{\"type\":\"tableRow\",\"content\":[{\"type\":\"tableCell\",\"attrs\":{\"colspan\":1,\"rowspan\":1,\"colwidth\":null},\"content\":[{\"type\":\"paragraph\"}]},{\"type\":\"tableCell\",\"attrs\":{\"colspan\":1,\"rowspan\":1,\"colwidth\":null},\"content\":[{\"type\":\"paragraph\"}]},{\"type\":\"tableCell\",\"attrs\":{\"colspan\":1,\"rowspan\":1,\"colwidth\":null},\"content\":[{\"type\":\"paragraph\"}]}]}]}]}",
+      "userId": 3,
+      "isPin": false,
+      "updateAt": 1741510741094,
+      "closed": false
+    },
+    {
+      "id": "i6ofto5cj",
+      "title": "23123123123",
+      "content": "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}",
+      "userId": 3,
+      "isPin": false,
+      "updateAt": 1741510899071,
+      "closed": false
+    },
+    {
+      "id": "tduf5mp7b",
+      "title": "76576573 7457467",
+      "content": "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"13231321\"}]}]}",
+      "userId": 3,
+      "isPin": false,
+      "updateAt": 1741510916182,
+      "closed": false
     }
   ],
   "user": [
