@@ -1,12 +1,11 @@
 import Sidebar from "@/app/components/Sidebar/Sidebar";
 import { fetchNotes } from "@/app/action";
-import useSWR from "swr";
-import { Skeleton } from "@mui/material";
+import { verifySession } from "@/app/utils/session"
 
 export default async function Note() {
-  const data = await fetchNotes();
-
+  const userId = await verifySession() || 0
+  const data = await fetchNotes(userId);
   return (
-    < Sidebar note={data} />
+    < Sidebar initialNotes={data} userId={userId} />
   );
 }

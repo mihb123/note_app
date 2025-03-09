@@ -1,251 +1,190 @@
 'use client'
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import NoteCard from './NoteCard';
-import DrawerHeader from './DrawerHeader';
-import { useRouter } from "next/navigation";
-import { Button, ListItemText, Skeleton, Typography } from '@mui/material';
+import React from 'react';
+import { useParams, useRouter } from "next/navigation";
+import useSWR from 'swr';
+import { Box, Drawer, List, ListItem, ListItemButton, Button, Typography } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { fetchNotes, QuickUpdate } from '@/app/action';
-import useSWR from 'swr';
-import Loading from '@/app/note/loading';
+import NoteCard from './NoteCard';
+import DrawerHeader from './DrawerHeader';
+// import DrawerHeader from './DrawerHeader';
 
-export default function Sidebar({ note }) {
-  const { data, mutate } = useSWR('notes', fetchNotes)
+const NoteSection = ({ title, count, notes, onPin, onClose }) => {
+  const params = useParams();
+  const id = params?.id;
+  return (
+    <>
+      <ListItem>
+        <Typography color="secondary">{`${title} (${count})`}</Typography>
+      </ListItem>
+      {notes.map((note) => (
+        <ListItem key={note.id} disablePadding>
+          <ListItemButton selected={id == note.id}>
+            <NoteCard
+              data={note}
+              HandlePinAction={() => onPin(note)}
+              CloseAction={() => onClose(note)}
+            />
+          </ListItemButton>
+        </ListItem>
+      ))}
+    </>
+  )
+};
+
+export default function Sidebar({ userId, note }) {
   const router = useRouter();
-
-  React.useEffect(() => {
-    mutate('notes')
-  }, [note])
-  // console.log("data", data)
-  let openNotes, closeNotes
-  if (typeof data != 'object') {
-    openNotes = note?.filter(e => !e.closed)
-    closeNotes = note?.filter(e => e.closed)
-  } else {
-    openNotes = data?.filter(e => !e.closed)
-    closeNotes = data?.filter(e => e.closed)
-  }
-
-  const numberClose = closeNotes?.length
-  const numberOpen = openNotes?.length
-  const [closeSide, setCloseSide] = React.useState(false)
-
-  const pinData = openNotes?.filter(e => e.isPin)
-  const unpin = openNotes?.filter(e => !e.isPin)
-  const [pinnedData, setPinnedData] = React.useState(pinData)
-  const [unpinnedData, setUnpinnedData] = React.useState(unpin)
-
-  function HandlePinAction(note) {
-    // set state
-    if (note.isPin) {
-      setPinnedData(prev => prev.filter(n => n.id !== note.id))
-      setUnpinnedData(prev => [...prev, note])
-    } else {
-      setPinnedData(prev => [...prev, note])
-      setUnpinnedData(prev => prev.filter(n => n.id !== note.id))
-    }
-
-    // set lại data
-    if (note.isPin) {
-      note.isPin = false;
-    } else {
-      note.isPin = true;
-    }
-    QuickUpdate(note)
-  }
-
-  async function HandleCloseAction(note) {
-    note.closed = !note.closed;
-
-    mutate((data) => {
-      if (!data) return note.map((e) =>
-        e.id === note.id ? { ...e, closed: note.closed } : e
-      );
-
-      return data.map((e) =>
-        e.id === note.id ? { ...e, closed: note.closed } : e
-      );
-    },
-      {
-        // optimisticData: (currentNotes) => {
-        //   if (!currentNotes) return [];
-        //   return currentNotes.map((e) =>
-        //     e.id === note.id ? { ...e, closed: note.closed } : e
-        //   );
-        // },
-        // populateCache: true,
-        revalidate: false,
-      })
-
-    await QuickUpdate(note)
-
-  }
-
+  const { data = note, mutate } = useSWR('notes', () => fetchNotes(userId));
   const [drawerWidth, setDrawerWidth] = React.useState(300);
   const [isResizing, setIsResizing] = React.useState(false);
-  const handleMouseMove = (event) => {
+  const [showClosed, setShowClosed] = React.useState(false);
+
+  const [closedNotes, openNotes] = React.useMemo(() =>
+    (data || []).reduce((acc, note) => {
+      note.closed ? acc[0].push(note) : acc[1].push(note);
+      return acc;
+    }, [[], []]),
+    [data]
+  );
+
+  const [pinnedNotes, unpinnedNotes] = React.useMemo(() =>
+    openNotes.reduce((acc, note) => {
+      note.isPin ? acc[0].push(note) : acc[1].push(note);
+      return acc;
+    }, [[], []]),
+    [openNotes]
+  );
+
+  const handlePin = async (note) => {
+    const updatedNote = { ...note, isPin: !note.isPin };
+    mutate(data => data.map(n => n.id === note.id ? updatedNote : n), false);
+    await QuickUpdate(updatedNote);
+  };
+
+  const handleClose = async (note) => {
+    const updatedNote = { ...note, closed: !note.closed };
+    mutate(data => data.map(n => n.id === note.id ? updatedNote : n), false);
+    await QuickUpdate(updatedNote);
+  };
+
+  const handleMouseMove = React.useCallback((e) => {
     if (isResizing) {
-      const newWidth = Math.max(80, event.clientX);
+      const drawerElement = document.querySelector('.MuiDrawer-paper');
+      const drawerRect = drawerElement.getBoundingClientRect();
+      const newWidth = Math.max(280, e.clientX - drawerRect.left);
       setDrawerWidth(newWidth);
     }
-  };
+  }, [isResizing]);
 
-  const stopResizing = () => {
-    setIsResizing(false);
-  };
-
-  const startResizing = (event) => {
-    event.preventDefault();
-    setIsResizing(true);
-  };
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-
-
+  // Resize handler
   React.useEffect(() => {
+
+    const stopResizing = () => setIsResizing(false);
+
     if (isResizing) {
-      document.addEventListener("mousemove", handleMouseMove);
-      document.addEventListener("mouseup", stopResizing);
-    } else {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", stopResizing);
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', stopResizing);
     }
 
     return () => {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", stopResizing);
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', stopResizing);
     };
   }, [isResizing]);
 
   return (
-    <>
-      <Drawer
-        sx={{
+    <Drawer
+      sx={{
+        width: drawerWidth,
+        flexShrink: 0,
+        height: '100vh', // Full viewport height
+        '& .MuiDrawer-paper': {
           width: drawerWidth,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: drawerWidth,
-            boxSizing: 'border-box',
-            overflowY: 'auto', // Ensure scrolling works
-            scrollbarWidth: 'none', // Hide scrollbar in Firefox
-            '&::-webkit-scrollbar': {
-              width: 0, // Hide scrollbar in Chrome, Safari
-              display: 'none',
-            },
-          },
-        }}
-        variant="permanent"
-      >
-        <DrawerHeader />
+          height: '100vh', // Full viewport height
+          boxSizing: 'border-box',
+          display: 'flex',
+          flexDirection: 'column',
+          position: 'relative',
+          overflow: 'hidden', // Hide overflow from container
+        }
+      }}
+      variant="permanent"
+    >
+      <DrawerHeader />
+      <Box sx={{
+        // flex: 1,
+        overflowY: 'auto',
+        scrollbarWidth: 'none',
+        '&::-webkit-scrollbar': { display: 'none' }
+      }}>
         <List>
-          <ListItem sx={{
-            display: "flex",
-            justifyContent: 'space-between'
-          }}
-          >
-            <Button variant="contained"
-
+          <ListItem sx={{ display: 'flex', justifyContent: 'space-between', gap: 1 }}>
+            <Button
+              variant="contained"
               onClick={() => router.push('/note/create')}
-              startIcon={<AddCircleIcon />}>
-              <Typography sx={{ mt: 0.5 }}>Create</Typography>
+              startIcon={<AddCircleIcon />}
+            >
+              Create
             </Button>
-            {closeSide ? <>
-              <Button variant="outlined"
-                onClick={() => setCloseSide(false)}
-              >
-                <Typography sx={{ mt: 0.6 }}>Open ({numberOpen})</Typography>
-              </Button>
-            </> :
-              <>
-                <Button variant="outlined"
-                  onClick={() => setCloseSide(true)}
-                >
-                  <Typography sx={{ mt: 0.6 }}>Closed ({numberClose})</Typography>
-                </Button>
-              </>
-            }
+
+            <Button
+              variant="outlined"
+              onClick={() => setShowClosed(!showClosed)}
+            >
+              {showClosed ? `Open (${openNotes.length})` : `Closed (${closedNotes.length})`}
+            </Button>
           </ListItem>
-          {closeSide ?
+
+          {showClosed ? (
+            <NoteSection
+              title="Closed Notes"
+              count={closedNotes.length}
+              notes={closedNotes}
+              onPin={handlePin}
+              onClose={handleClose}
+            />
+          ) : (
             <>
-              {closeNotes.map((e, index) => (
-                <ListItem key={index} disablePadding>
-                  <ListItemButton >
-                    <NoteCard
-                      data={e}
-                      HandlePinAction={HandlePinAction}
-                      CloseAction={HandleCloseAction}
-                      closeSide={closeSide}
-                    />
-                  </ListItemButton>
-                </ListItem>
-              ))}
+              {pinnedNotes.length > 0 && (
+                <NoteSection
+                  title="Pinned"
+                  count={pinnedNotes.length}
+                  notes={pinnedNotes}
+                  onPin={handlePin}
+                  onClose={handleClose}
+                />
+              )}
+
+              {unpinnedNotes.length > 0 && (
+                <NoteSection
+                  title="Notes"
+                  count={unpinnedNotes.length}
+                  notes={unpinnedNotes}
+                  onPin={handlePin}
+                  onClose={handleClose}
+                />
+              )}
             </>
-            :
-            <>
-              {pinData?.length != 0 &&
-                <>
-                  <ListItem >
-                    <Typography color='secondary'>Pinned ({pinData?.length})</Typography>
-                  </ListItem>
-
-                  {pinData?.map((e, index) => (
-                    <ListItem key={index} disablePadding>
-                      <ListItemButton >
-                        <NoteCard
-                          data={e}
-                          HandlePinAction={HandlePinAction}
-                          CloseAction={HandleCloseAction}
-                        />
-                      </ListItemButton>
-                    </ListItem>
-                  ))}
-
-                </>
-              }
-              {unpin?.length != 0 &&
-                <>
-                  <ListItem>
-                    <Typography color='secondary'>Notes ({unpin?.length})</Typography>
-                  </ListItem>
-                  {unpin?.map((e, index) => (
-                    <ListItem key={index} disablePadding>
-                      <ListItemButton >
-                        <NoteCard
-                          data={e}
-                          HandlePinAction={HandlePinAction}
-                          CloseAction={HandleCloseAction}
-                        />
-                      </ListItemButton>
-                    </ListItem>
-                  ))}
-                </>
-              }
-            </>
-          }
-
+          )}
         </List>
-        <Box
-          sx={{
-            position: "absolute", right: 0, top: 0, bottom: 0, width: "6px", cursor: "w-resize", zIndex: 1000, backgroundColor: "rgba(202, 182, 182, 0.1)",
-            "&:focus": { // Sửa lại thành "&:hover"
-              backgroundColor: "grey",
-              // cursor: "pointer"
-            },
-          }}
-          onMouseDown={startResizing}
-        />
-      </Drawer >
-    </>
+      </Box>
+      <Box
+        sx={{
+          position: 'absolute',
+          right: 0,
+          top: 0,
+          bottom: 0,
+          width: 6,
+          cursor: 'col-resize',
+          zIndex: 1000,
+          bgcolor: 'divider',
+          '&:hover': { bgcolor: 'grey.500' }
+        }}
+        onMouseDown={(e) => {
+          e.preventDefault();
+          setIsResizing(true)
+        }}
+      />
+    </Drawer>
   );
 }

@@ -5,11 +5,12 @@ import { verifySession } from "@/app/utils/session"
 import { fetchNotes } from "@/app/action";
 import { fetchUserId } from "./action/auth";
 import { SWRProvider } from "./components/root/SWRConfig";
+import { Suspense } from 'react';
 
 export default async function RootLayout({ children }) {
-  const notes = await fetchNotes();
-  const userId = await verifySession() || null
+  const userId = await verifySession() || 0
   const user = fetchUserId(userId)
+  const notes = await fetchNotes(userId);
 
   return (
     <SWRProvider fallback={{
@@ -20,7 +21,9 @@ export default async function RootLayout({ children }) {
         <AppTheme>
           <html lang="en">
             <body>
-              {children}
+              <Suspense fallback={(<h2>🌀 Loading...</h2>)}>
+                {children}
+              </Suspense>
             </body>
           </html>
         </AppTheme>

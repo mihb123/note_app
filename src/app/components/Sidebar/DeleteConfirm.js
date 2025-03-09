@@ -10,6 +10,7 @@ import { red } from "../root/themePrimitives"
 import { useTheme } from '@mui/material/styles';
 import { mutate } from 'swr';
 import { useSnackbar } from 'notistack';
+import { redirect } from 'next/navigation'
 
 export default function DeleteConfirm(props) {
   const { id, title, open, setOpen } = props
@@ -36,6 +37,8 @@ export default function DeleteConfirm(props) {
     } catch (error) {
       console.error(error);
       enqueueSnackbar("Fail to delete note", { variant: "error" });
+    } finally {
+      redirect('/note/create')
     }
 
   };

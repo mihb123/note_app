@@ -15,7 +15,6 @@ export default function Main({ item }) {
   const [titleValue, setTitleValue] = React.useState(title);
   const [hide, setHide] = React.useState('none');
   const [updatedAt, setUpdatedAt] = React.useState(updateAt);
-
   let output = null
   if (content) {
     output = JSON.parse(content)
@@ -27,6 +26,7 @@ export default function Main({ item }) {
       setHide('flex')
     }
   })
+
   const { enqueueSnackbar } = useSnackbar();
 
   async function handleUpdate() {

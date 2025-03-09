@@ -4,12 +4,14 @@ import Main from '@/app/components/Main';
 import { fetchNoteId } from '@/app/action';
 import useSWR from 'swr';
 import Loading from './loading';
+import { useAuth } from '@/app/hooks/useAuth';
 
 function NoteDetail() {
   const params = useParams();
   const id = params?.id;
+  const { userId } = useAuth()
 
-  const { data, error, mutate } = useSWR(`notes/${id}`, () => fetchNoteId(id))
+  const { data, error, mutate } = useSWR(`notes/${id}`, () => fetchNoteId(id, userId))
   // 
   if (data == undefined) return <Loading />
   return (

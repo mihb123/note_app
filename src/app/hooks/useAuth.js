@@ -4,15 +4,19 @@ import { createSession, decrypt, deleteSession } from '@/app/utils/session'
 import { fetchUserByEmail } from "@/app/action/auth"
 import { redirect } from 'next/navigation';
 import { createContext, useContext } from "react";
-import { SelectedItemProvider } from './useSelectedItem';
 
 const AuthContext = createContext(undefined)
 
 export function AuthProvider({ userId, children }) {
-  const { data, error, mutate } = useSWR(userId ? `/user/${userId}` : null, { suspense: true, }, { revalidateIfStale: false, revalidateOnFocus: false, revalidateOnReconnect: false });
+  const { data, error, mutate } = useSWR(`/user/${userId}`, {
+    suspense: true,
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false
+  });
 
   const loading = !data && !error
-  const loggedIn = !error && data?.id
+  const loggedIn = !error && data?.email
 
   const login = async (email, password) => {
     // Thực hiện đăng nhập

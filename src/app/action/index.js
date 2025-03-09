@@ -1,13 +1,12 @@
 'use server'
-import { redirect } from 'next/navigation'
 import { revalidateTag } from 'next/cache'
 
 const url = process.env.NEXT_PUBLIC_SERVER
 const urlNote = `${url}/notes`;
 
-export async function fetchNotes() {
+export async function fetchNotes(userId) {
   try {
-    const response = await fetch(`${urlNote}?_sort=updateAt&_order=DESC`, {
+    const response = await fetch(`${urlNote}?userId=${userId}&_sort=updateAt&_order=DESC`, {
       method: "GET",
       next: { tags: ['note'] }, // Gán tag 'note'
       headers: {
@@ -27,9 +26,9 @@ export async function fetchNotes() {
   }
 }
 
-export async function fetchNoteId(id) {
+export async function fetchNoteId(id, userId) {
   try {
-    const response = await fetch(`${urlNote}/${id}`, {
+    const response = await fetch(`${urlNote}/${id}?userId=${userId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

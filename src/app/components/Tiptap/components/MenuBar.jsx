@@ -135,12 +135,12 @@ export default function MenuBar({ editor }) {
       type: "divider",
     },
     {
-      icon: "RiTableView",
+      icon: "",
       title: "Insert table",
       action: () => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run(),
     },
     {
-      icon: "RiDeleteBin2Line",
+      icon: "",
       title: "Delete table",
       action: () => editor.chain().focus().deleteColumn().run(),
     },    
