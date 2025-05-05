@@ -12,13 +12,12 @@ import { mutate } from 'swr';
 import { useSnackbar } from 'notistack';
 import { redirect } from 'next/navigation'
 
-export default function DeleteConfirm(props) {
-  const { id, title, open, setOpen } = props
+export default function DeleteConfirm({ id, title, open, setOpen }) {
   const { enqueueSnackbar } = useSnackbar();
 
   const handleDelete = async (id) => {
     mutate(
-      'notes',
+      '/notes',
       //remote element include id     
       (currentNotes = []) => currentNotes.filter(e => e.id !== id),
       {
@@ -31,9 +30,9 @@ export default function DeleteConfirm(props) {
     setOpen(false);
 
     try {
-      await deleteNote(id) // Gửi lên server
-      await mutate('notes');
+      await deleteNote(id) 
       enqueueSnackbar("Delete successfully", { variant: "success" });
+      await mutate('/notes');
     } catch (error) {
       console.error(error);
       enqueueSnackbar("Fail to delete note", { variant: "error" });
@@ -61,12 +60,6 @@ export default function DeleteConfirm(props) {
           <Button onClick={() => setOpen(false)}>Cancel</Button>
           <Button onClick={() => handleDelete(id)}
             variant='contained'
-          // sx={({ theme }) => ({
-          //   ...(theme.palette.mode === 'dark' && {
-          //     backgroundColor: red[400],
-          //     backgroundImage: "none"
-          //   }),
-          // })}
           >
             Delete note
           </Button>

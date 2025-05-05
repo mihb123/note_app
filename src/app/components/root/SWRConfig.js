@@ -6,6 +6,7 @@ export const SWRProvider = ({ children, fallback }) => {
   return <SWRConfig
     value={{
       fetcher: (url) => fetch(`${baseUrl}${url}`).then(res => res.json()),
+      refreshInterval: 60000,
       revalidateIfStale: false,
       fallback,
       errorRetryCount: 3,

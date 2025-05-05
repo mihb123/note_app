@@ -7,13 +7,13 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { fetchNotes, QuickUpdate } from '@/app/action';
 import NoteCard from './NoteCard';
 import DrawerHeader from './DrawerHeader';
-// import DrawerHeader from './DrawerHeader';
+import { fetchShareNote } from '@/app/action/shareNote';
 
 const NoteSection = ({ title, count, notes, onPin, onClose }) => {
   const params = useParams();
   const id = params?.id;
   return (
-    <>
+    <div key={title}>
       <ListItem>
         <Typography color="secondary">{`${title} (${count})`}</Typography>
       </ListItem>
@@ -28,16 +28,34 @@ const NoteSection = ({ title, count, notes, onPin, onClose }) => {
           </ListItemButton>
         </ListItem>
       ))}
-    </>
+    </div>
   )
 };
 
-export default function Sidebar({ userId, note }) {
+export default function Sidebar({ userId, initialNotes }) {
   const router = useRouter();
-  const { data = note, mutate } = useSWR('notes', () => fetchNotes(userId));
-  if (data == undefined) {
-    console.log('data is undefined')
+  const { data: notes = initialNotes, mutate } = useSWR('/notes', () => fetchNotes(userId));
+  if (notes == undefined) {
+    console.log('notes is undefined')
   }
+
+  const { data: shareNotes } = useSWR('/shareNotes', () => fetchShareNote(userId));
+  let data = notes;
+  if (shareNotes != undefined) {
+    const updatedNotes = shareNotes.map(e => {
+      const note = e.Note;
+      return {
+        ...note,
+        closed: false,
+        isPin: false
+      };
+    });
+
+    data = [
+      ...notes,
+      ...updatedNotes.filter(u => !notes.some(n => n.id === u.id))
+    ];
+  };
 
   const [drawerWidth, setDrawerWidth] = React.useState(300);
   const [isResizing, setIsResizing] = React.useState(false);

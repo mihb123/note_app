@@ -6,7 +6,7 @@ const urlNote = `${url}/notes`;
 
 export async function fetchNotes(userId) {
   try {
-    const response = await fetch(`${urlNote}?userId=${userId}&_sort=updateAt&_order=DESC`, {
+    const response = await fetch(`${urlNote}?userId=${userId}&_sort=updatedAt&_order=DESC`, {
       method: "GET",
       next: { tags: ['note'] }, // Gán tag 'note'
       headers: {
@@ -14,9 +14,7 @@ export async function fetchNotes(userId) {
         // 'Content-Type': 'application/x-www-form-urlencoded',
       },
     })
-
     if (response.ok) {
-
       return await response.json();
     } else {
       console.error('Failed to fetch the note.');
@@ -26,9 +24,9 @@ export async function fetchNotes(userId) {
   }
 }
 
-export async function fetchNoteId(id, userId) {
+export async function fetchNoteId(id) {
   try {
-    const response = await fetch(`${urlNote}/${id}?userId=${userId}`, {
+    const response = await fetch(`${urlNote}/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -37,19 +35,18 @@ export async function fetchNoteId(id, userId) {
     })
 
     if (response.ok) {
-      return await response.json();
+      const result = await response.json()
+      return await result;
     } else {
       console.error('Failed to fetch the noteID.');
       return []
     }
   } catch (error) {
     console.error('Error:', error);
-    throw new Error("Failed to fetch the noteID.");
   }
 }
 
 export async function createNote(data) {
-
   try {
     const response = await fetch(urlNote, {
       method: "POST",
@@ -57,7 +54,6 @@ export async function createNote(data) {
       body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
-        // 'Content-Type': 'application/x-www-form-urlencoded',
       },
     })
 
@@ -79,7 +75,6 @@ export async function deleteNote(id) {
   try {
     const response = await fetch(`${urlNote}/${id}`, {
       method: 'DELETE',
-      // next: { tags: ['note'] }, // Gán tag 'note'
     });
 
     if (response.ok) {
@@ -101,7 +96,7 @@ export async function UpdateNoteAction(formData) {
     title: formData?.get('title'),
     content: formData?.get('content'),
     isPin: formData?.get('isPin'),
-    updateAt: formData?.get('updateAt'),
+    updatedAt: formData?.get('updatedAt'),
     closed: close
   }
   try {
@@ -124,7 +119,8 @@ export async function UpdateNoteAction(formData) {
 export async function QuickUpdate(data) {
 
   try {
-    const res = await fetch(`${urlNote}/${data.id}`, {
+    const id = data?.id || data?._id;
+    const res = await fetch(`${urlNote}/${id}`, {
       method: "PUT",
       next: { tags: ['note'] },
       body: JSON.stringify(data),

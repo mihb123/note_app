@@ -8,14 +8,13 @@ import { SWRProvider } from "./components/root/SWRConfig";
 import { Suspense } from 'react';
 
 export default async function RootLayout({ children }) {
-  const userId = await verifySession() || 0
+  const userId = await verifySession() || process.env.userID;
   const user = fetchUserId(userId)
   const notes = await fetchNotes(userId);
-
   return (
     <SWRProvider fallback={{
-      "notes": notes,
-      [`/user/${userId}`]: user
+      '/notes': notes,
+      [`/users/${userId}`]: user
     }}>
       <AuthProvider userId={userId}>
         <AppTheme>

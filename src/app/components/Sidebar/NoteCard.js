@@ -24,7 +24,7 @@ const DynamicTimeAgo = dynamic(
 );
 
 export default function NoteCard({ data, HandlePinAction, CloseAction, closeSide }) {
-  const updateAt = data?.updateAt;
+  const updatedAt = data?.updatedAt;
   const router = useRouter();
   const [hide, setHide] = React.useState("none");
 
@@ -119,7 +119,7 @@ export default function NoteCard({ data, HandlePinAction, CloseAction, closeSide
           )}
 
           {/* Card Content */}
-          <CardContent onClick={() => handleNoteClick(data.id)}>
+          <CardContent onClick={() => handleNoteClick(data.id || data._id)}>
             <Typography sx={{ display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 2, overflow: "hidden" }}>
               {data.title}
             </Typography>
@@ -135,12 +135,12 @@ export default function NoteCard({ data, HandlePinAction, CloseAction, closeSide
               </Typography>
             )}
 
-            {typeof updateAt == 'number' && <DynamicTimeAgo updateAt={updateAt} />}
+            {typeof updatedAt == 'number' && <DynamicTimeAgo updatedAt={updatedAt} />}
           </CardContent>
         </CardActionArea>
       </Card>
 
-      <DeleteConfirm id={data.id} title={data.title} open={open} setOpen={setOpen} />
+      <DeleteConfirm id={data.id || data._id} title={data.title} open={open} setOpen={setOpen} />
     </>
   );
 }

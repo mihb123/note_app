@@ -31,12 +31,11 @@ export default function CreateNote() {
       content: JSON.stringify(editor.getJSON()),
       userId: userId || null,
       isPin: false,
-      updateAt: now.getTime(),
       closed: false
     };
 
     try {
-      mutate('notes', (current = []) => [newData, ...current], {
+      mutate('/notes', (current = []) => [newData, ...current], {
         optimisticData: (current = []) => [newData, ...current],
         rollbackOnError: true,
         revalidate: false,
@@ -44,7 +43,6 @@ export default function CreateNote() {
 
       await createNote(newData);
       enqueueSnackbar("Created successfully", { variant: "success" });
-
       // Reset form
       titleRef.current.value = '';
       editor.commands.clearContent();
@@ -53,7 +51,7 @@ export default function CreateNote() {
       enqueueSnackbar("Fail to create note", { variant: "error" });
     } finally {
       setIsSubmitting(false);
-      await mutate('notes');
+      await mutate('/notes');
     }
   }, [editor, userId, enqueueSnackbar]);
 

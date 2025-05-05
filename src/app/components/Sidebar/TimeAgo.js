@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { Typography } from "@mui/material";
 
-export default function TimeAgo({ updateAt }) {
+export default function TimeAgo({ updatedAt }) {
   const [mounted, setMounted] = React.useState(false);
   const [timeAgo, setTimeAgo] = React.useState("");
   const getTimeAgo = (timestamp) => {
@@ -31,18 +31,18 @@ export default function TimeAgo({ updateAt }) {
 
   React.useEffect(() => {
     setMounted(true);
-    if (!updateAt) return;
+    if (!updatedAt) return;
 
-    const timestamp = Number(updateAt);
+    const timestamp = Number(updatedAt);
     const update = () => setTimeAgo(getTimeAgo(timestamp));
 
     update();
     const interval = setInterval(update, 1000);
     return () => clearInterval(interval);
-  }), [updateAt];
+  }), [updatedAt];
 
   // Prevent server-client mismatch
-  if (!mounted || !updateAt) return null;
+  if (!mounted || !updatedAt) return null;
 
   return <Typography variant="caption" sx={{ color: "text.secondary", mt: 1, display: "block" }}>{timeAgo}</Typography>;
 }

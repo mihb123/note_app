@@ -8,7 +8,7 @@ import { createContext, useContext } from "react";
 const AuthContext = createContext(undefined)
 
 export function AuthProvider({ userId, children }) {
-  const { data, error, mutate } = useSWR(`/user/${userId}`, {
+  const { data, error, mutate } = useSWR(`/users/${userId}`, {
     suspense: true,
     revalidateIfStale: false,
     revalidateOnFocus: false,
@@ -25,14 +25,18 @@ export function AuthProvider({ userId, children }) {
       console.log("Không tồn tại", email)
       return false
     }
-    const ePassword = await decrypt(data[0].password)
+    console.log(data.password)
+
+    const ePassword = await decrypt(data.password)
+    console.log(ePassword)
+
     const isMatch = ePassword.password == password;
     if (!isMatch) {
       console.log("Sai mật khẩu");
       return false
     }
     console.log("Đăng nhập thành công");
-    await createSession(data[0].id)
+    await createSession(data.id)
     // Cập nhật cache SWR
     mutate()
     return true
@@ -61,46 +65,4 @@ export function useAuth() {
   return context
 }
 
-// export default function useAuth(id) {
-//   const baseUrl = process.env.NEXT_PUBLIC_SERVER
-
-//   const { data, error, mutate } = useSWR(id ? `${baseUrl}/user/${id}` : null, { suspense: true });
-//   const loading = !data && !error
-//   const loggedIn = !error && data?.id
-//   const login = async (email, password) => {
-//     // Thực hiện đăng nhập
-//     const data = await fetchUserByEmail(email)
-//     if (!data) {
-//       console.log("Không tồn tại", email)
-//       return false
-//     }
-//     const ePassword = await decrypt(data[0].password)
-//     const isMatch = ePassword.password == password;
-//     if (!isMatch) {
-//       console.log("Sai mật khẩu");
-//       return false
-//     }
-//     console.log("Đăng nhập thành công");
-//     await createSession(data[0].id)
-//     // Cập nhật cache SWR
-//     mutate()
-//     return true
-//   }
-
-//   const logout = async () => {
-//     // Thực hiện đăng xuất
-//     await deleteSession()
-//     // Cập nhật cache SWR
-//     mutate(null)
-//     redirect('/sign-in')
-//   }
-
-//   return {
-//     user: data,
-//     loading,
-//     loggedIn,
-//     login,
-//     logout,
-//   }
-// }
 

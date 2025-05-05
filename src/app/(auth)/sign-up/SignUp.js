@@ -16,8 +16,8 @@ import { styled } from '@mui/material/styles';
 import ColorModeSelect from '@/app/components/root/ColorModeSelect';
 import { GoogleIcon } from '@/app/components/auth/CustomIcons';
 import { CreateUser } from '@/app/action/auth';
-// import bcrypt from "bcrypt";
 import { encrypt, decrypt } from '@/app/utils/session';
+import { redirect } from 'next/navigation'
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -116,15 +116,13 @@ export default function SignUp(props) {
     const hashedPassword = await encrypt({ password: password });
 
     const Data = {
-
       name: data.get('name'),
       isActive: false,
       email: data.get('email'),
       password: hashedPassword
     }
-    console.log(Data, 'Data');
     await CreateUser(Data)
-
+    redirect('/')
   };
 
   return (

@@ -1,0 +1,110 @@
+{
+  "cody.autocomplete.advanced.provider": "experimental-ollama",
+  "cody.autocomplete.languages": {
+    "outputChannelId": "61b6aa1b3d0f",
+    "languages": {
+      "javascript": {
+        "enabled": true,
+        "triggerCharacters": [
+          ".",
+          ":",
+          "<",
+          ">"
+        ]
+      },
+      "typescript": {
+        "enabled": true,
+        "triggerCharacters": [
+          ".",
+          ":",
+          "<",
+          ">"
+        ]
+      },
+      "html": {
+        "enabled": true,
+        "triggerCharacters": [
+          ".",
+          ":",
+          "<",
+          ">"
+        ]
+      },
+      "css": {
+        "enabled": true,
+        "triggerCharacters": [
+          ".",
+          ":",
+          "<",
+          ">"
+        ]
+      },
+      "scss": {
+        "enabled": true,
+        "triggerCharacters": [
+          ".",
+          ":",
+          "<",
+          ">"
+        ]
+      },
+      "json": {
+        "enabled": true,
+        "triggerCharacters": [
+          ".",
+          ":",
+          "<",
+          ">"
+        ]
+      },
+      "markdown": {
+        "enabled": true,
+        "triggerCharacters": [
+          ".",
+          ":",
+          "<",
+          ">"
+        ]
+      },
+      "yaml": {
+        "enabled": true,
+        "triggerCharacters": [
+          ".",
+          ":",
+          "<",
+          ">"
+        ]
+      },
+      "xml": {
+        "enabled": true,
+        "triggerCharacters": [
+          ".",
+          ":",
+          "<",
+          ">"
+        ]
+      },
+      "php": {
+        "enabled": true,
+        "triggerCharacters": [
+          ".",
+          ":",
+          "<",
+          ">"
+        ]
+      },
+      "python": {
+        "enabled": true,
+        "triggerCharacters": [
+          ".",
+          ":",
+          "<",
+          ">"
+        ]
+      },       
+
+
+    "*": true
+  }
+}
+}
