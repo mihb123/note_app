@@ -18,20 +18,18 @@ export default function SharePanel({ openPanel, setOpenPanel, noteId, shareUsers
 
   async function handleAddUser(e) {
     e.preventDefault();
-    
     const email = e.target.email.value;
     const data = {
       email: email,
       noteId: noteId
     }
     e.target.email.value = "";
-    setUsers(prev => [...prev, data]);
     const result = await addUserToShareNote(data);
-    console.log(result)
     if (result == undefined) {
-      setUsers(users => users.filter(u => u.email !== data.email))
       enqueueSnackbar(`Fail to share note for ${email}`, { variant: "error" });
     } else {
+      const newUser = result.User
+      setUsers(prev => [...prev, newUser]);
       enqueueSnackbar(`Successful to share note for ${email}`, { variant: "success" });
     }
   }

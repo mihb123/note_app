@@ -25,11 +25,8 @@ export function AuthProvider({ userId, children }) {
       console.log("Không tồn tại", email)
       return false
     }
-    console.log(data.password)
 
     const ePassword = await decrypt(data.password)
-    console.log(ePassword)
-
     const isMatch = ePassword.password == password;
     if (!isMatch) {
       console.log("Sai mật khẩu");
