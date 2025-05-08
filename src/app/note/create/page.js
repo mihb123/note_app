@@ -9,6 +9,7 @@ import { TiptapEditor, Editor } from '../../components/Tiptap/TiptapEditor';
 import { useAuth } from '@/app/hooks/useAuth';
 import { mutate } from 'swr';
 import { useSnackbar } from 'notistack';
+import { useSWRConfig } from 'swr';
 
 export default function CreateNote() {
   const { enqueueSnackbar } = useSnackbar();
@@ -16,13 +17,14 @@ export default function CreateNote() {
   const titleRef = React.useRef(null);
   const { userId } = useAuth();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const { cache, mutate } = useSWRConfig();
 
   const handleSubmit = React.useCallback(async () => {
     if (!titleRef.current?.value?.trim()) {
       enqueueSnackbar("Title is required", { variant: "error" });
       return;
     }
-
+    
     setIsSubmitting(true);
     const now = new Date();
     const newData = {
@@ -34,18 +36,28 @@ export default function CreateNote() {
       closed: false
     };
 
-    try {
-      mutate('/notes', (current = []) => [newData, ...current], {
-        optimisticData: (current = []) => [newData, ...current],
-        rollbackOnError: true,
-        revalidate: false,
-      });
+    const updateNote = (current = []) => [newData, ...current];
 
-      await createNote(newData);
-      enqueueSnackbar("Created successfully", { variant: "success" });
-      // Reset form
+    for (const key of cache.keys()) {
+      if (key.includes('$inf$@')) {
+        mutate(key, updateNote, {
+          optimisticData: updateNote,
+          rollbackOnError: true, // Quay lại dữ liệu cũ nếu có lỗi
+          populateCache: true, // Lưu vào cache SWR
+          revalidate: false, // Không fetch lại ngay lập tức
+        });
+      }
+    }
       titleRef.current.value = '';
       editor.commands.clearContent();
+    try {
+      await createNote(newData);
+      enqueueSnackbar("Created successfully", { variant: "success" });
+      for (const key of cache.keys()) {
+        if (key.includes('/notes')) {
+          await mutate(key);
+        }
+      }
     } catch (error) {
       console.error(error);
       enqueueSnackbar("Fail to create note", { variant: "error" });

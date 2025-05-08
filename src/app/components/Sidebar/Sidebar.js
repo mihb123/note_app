@@ -8,14 +8,21 @@ import { fetchNotes, QuickUpdate } from '@/app/action';
 import NoteCard from './NoteCard';
 import DrawerHeader from './DrawerHeader';
 import { fetchShareNote } from '@/app/action/shareNote';
+import useSWRInfinite from 'swr/infinite'
+import { useSWRConfig } from 'swr';
 
-const NoteSection = ({ title, count, notes, onPin, onClose }) => {
+const NoteSection = ({ title, count, notes, onPin, onClose, setSize, size }) => {
   const params = useParams();
   const id = params?.id;
   return (
-    <div key={title}>
+    <div key={title} className="note-section">
       <ListItem>
         <Typography color="secondary">{`${title} (${count})`}</Typography>
+        <Button sx={{ ml: 'auto' }}
+        onClick= {() => setSize(size + 1)}
+        >
+          <Typography color="text.secondary" sx={{ flexGrow: 1 }}>Load more</Typography>
+        </Button>
       </ListItem>
       {notes.map((note) => (
         <ListItem key={note.id} disablePadding>
@@ -32,14 +39,22 @@ const NoteSection = ({ title, count, notes, onPin, onClose }) => {
   )
 };
 
-export default function Sidebar({ userId, initialNotes }) {
+export default function Sidebar({ userId, initialNotes, shares }) {
+  const { cache } = useSWRConfig();
   const router = useRouter();
-  const { data: notes = initialNotes, mutate } = useSWR('/notes', () => fetchNotes(userId));
+  const getKey = (pageIndex, previousPageData) => {
+    if (previousPageData && !previousPageData.length) return null 
+    const key = ["/notes", pageIndex + 1];
+    return key;                    
+  }
+  const { data: Notes = initialNotes, mutate, size, setSize, isLoading } = useSWRInfinite(getKey, ([, page]) => fetchNotes(userId, page));
+  const notes = Notes ? [].concat(...Notes) : [];
+
   if (notes == undefined) {
     console.log('notes is undefined')
   }
-
-  const { data: shareNotes } = useSWR('/shareNotes', () => fetchShareNote(userId));
+  
+  const { data: shareNotes = shares } = useSWR('/shareNotes', () => fetchShareNote(userId));
   let data = notes;
   if (shareNotes != undefined) {
     const updatedNotes = shareNotes.map(e => {
@@ -164,6 +179,8 @@ export default function Sidebar({ userId, initialNotes }) {
               notes={closedNotes}
               onPin={handlePin}
               onClose={handleClose}
+              setSize={setSize}
+              size={size}
             />
           ) : (
             <>
@@ -174,6 +191,8 @@ export default function Sidebar({ userId, initialNotes }) {
                   notes={pinnedNotes}
                   onPin={handlePin}
                   onClose={handleClose}
+                  setSize={setSize}
+                  size={size}
                 />
               )}
 
@@ -184,6 +203,8 @@ export default function Sidebar({ userId, initialNotes }) {
                   notes={unpinnedNotes}
                   onPin={handlePin}
                   onClose={handleClose}
+                  setSize={setSize}
+                  size={size}
                 />
               )}
             </>

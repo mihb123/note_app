@@ -3,10 +3,11 @@ import { revalidateTag } from 'next/cache'
 
 const url = process.env.NEXT_PUBLIC_SERVER
 const urlNote = `${url}/notes`;
+const ITEM_PER_PAGE = 7;
 
-export async function fetchNotes(userId) {
+export async function fetchNotes(userId=1, page=1) {
   try {
-    const response = await fetch(`${urlNote}?userId=${userId}&_sort=updatedAt&_order=DESC`, {
+    const response = await fetch(`${urlNote}?userId=${userId}&_sort=updatedAt&_order=DESC&per_page=${ITEM_PER_PAGE}&page=${page}`, {
       method: "GET",
       next: { tags: ['note'] }, // Gán tag 'note'
       headers: {
@@ -28,6 +29,7 @@ export async function fetchNoteId(id) {
   try {
     const response = await fetch(`${urlNote}/${id}`, {
       method: "GET",
+      next: { tags: [`note/${id}`] }, // Gán tag 'note'
       headers: {
         "Content-Type": "application/json",
         // 'Content-Type': 'application/x-www-form-urlencoded',
@@ -50,7 +52,7 @@ export async function createNote(data) {
   try {
     const response = await fetch(urlNote, {
       method: "POST",
-      next: { tags: ['note'] }, // Gán tag 'note'
+      next: { tags: ['note'] }, 
       body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
@@ -75,6 +77,7 @@ export async function deleteNote(id) {
   try {
     const response = await fetch(`${urlNote}/${id}`, {
       method: 'DELETE',
+      next: { tags: ['note'] }, 
     });
 
     if (response.ok) {
@@ -103,6 +106,7 @@ export async function UpdateNoteAction(formData) {
     const res = await fetch(`${urlNote}/${data.id}`, {
       method: "PUT",
       body: JSON.stringify(data),
+      next: { tags: ['note'] }, 
       headers: {
         "Content-Type": "application/json",
         // 'Content-Type': 'application/x-www-form-urlencoded',
@@ -129,7 +133,6 @@ export async function QuickUpdate(data) {
         // 'Content-Type': 'application/x-www-form-urlencoded',
       },
     })
-
     revalidateTag("note")
     return await res.json()
   } catch (error) {

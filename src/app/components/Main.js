@@ -6,10 +6,10 @@ import { QuickUpdate } from "@/app/action";
 import { Button, Grid2 as Grid } from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
 import { TiptapEditor, Editor } from './Tiptap/TiptapEditor';
-import { mutate } from 'swr';
 import { useSnackbar } from 'notistack';
 import SharePanel from './SharePanel';
 import { fetchShareUser } from '@/app/action/shareNote';
+import { useSWRConfig } from 'swr';
 
 export default function Main({ item }) {
   const { id, title, content, isPin, closed } = item;
@@ -28,31 +28,47 @@ export default function Main({ item }) {
       setHide('flex')
     }
   })
+  const { cache, mutate } = useSWRConfig();
 
   const { enqueueSnackbar } = useSnackbar();
-
   async function handleUpdate() {
     const result = editor?.getJSON()
     const newItem = {
       ...item,
       title: titleValue,
-      content: JSON.stringify(result),    }
-    mutate(
-      '/notes',
-      (notes = []) => (notes.map(e => (e.id === newItem.id) ? newItem : e)),
-      {
-        optimisticData: (notes = []) => (notes.map(e => (e.id === newItem.id) ? newItem : e)),
-        rollbackOnError: true, // Quay lại dữ liệu cũ nếu có lỗi
-        populateCache: true, // Lưu vào cache SWR
-        revalidate: false, // Không fetch lại ngay lập tức
+      content: JSON.stringify(result),
+    }
+    const updateNote = (notes = []) => {
+      const newNotes = notes.map((page) =>
+        page.map((e) => (e.id === newItem.id ? newItem : e))
+      );
+      return newNotes;
+    };
+
+    for (const key of cache.keys()) {
+      if (key.includes('$inf$@')) {
+        const v = cache.get(key)
+        console.log('key', key, v)
+        mutate(key, updateNote, {
+            optimisticData: updateNote,
+            rollbackOnError: true, // Quay lại dữ liệu cũ nếu có lỗi
+            populateCache: true, // Lưu vào cache SWR
+            revalidate: false, // Không fetch lại ngay lập tức
+      });
       }
-    );
+    }
 
     try {
       await QuickUpdate(newItem); // Gửi lên server
       enqueueSnackbar("Update successfully", { variant: "success" });
-      await mutate('/notes');
-      await mutate(`/notes/${item.id}`);
+      // await mutate((key) => Array.isArray(key) && key[0] === '/notes')
+      for (const key of cache.keys()) {
+        if (key.includes('/notes')) {
+          await mutate(key); 
+        }
+      }
+      await mutate('/shareNotes');
+
     } catch (error) {
       console.error(error);
       enqueueSnackbar("Fail to update note", { variant: "error" });

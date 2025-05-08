@@ -36,7 +36,6 @@ export async function fetchShareUser(noteId) {
     })
     if (res.ok) {
       const result = await res.json();
-      console.log('Fetch share user successfully')
       return result;
     } else {
       console.error('Fail to fetch share user')
@@ -56,7 +55,6 @@ export async function fetchShareNote(userId) {
     })
     if (res.ok) {
       const result = await res.json();
-      console.log('Fetch share user successfully')
       return result;
     } else {
       console.error('Fail to fetch share user')

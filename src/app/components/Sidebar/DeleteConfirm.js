@@ -6,33 +6,39 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { deleteNote } from '@/app/action'
-import { red } from "../root/themePrimitives"
-import { useTheme } from '@mui/material/styles';
-import { mutate } from 'swr';
 import { useSnackbar } from 'notistack';
 import { redirect } from 'next/navigation'
+import { useSWRConfig } from 'swr';
 
 export default function DeleteConfirm({ id, title, open, setOpen }) {
   const { enqueueSnackbar } = useSnackbar();
+  const { cache, mutate } = useSWRConfig();
 
   const handleDelete = async (id) => {
-    mutate(
-      '/notes',
-      //remote element include id     
-      (currentNotes = []) => currentNotes.filter(e => e.id !== id),
-      {
-        optimisticData: (currentNotes = []) => currentNotes.filter(e => e.id !== id), // Cập nhật tức thì
-        rollbackOnError: true, // Quay lại dữ liệu cũ nếu có lỗi
-        populateCache: true, // Lưu vào cache SWR
-        revalidate: false, // Không fetch lại ngay lập tức
+    const updateNote = (pages = []) => pages.map(page => page.filter(e => e.id !== id));
+
+    for (const key of cache.keys()) {
+      if (key.includes('$inf$@')) {
+        const v = cache.get(key)
+        console.log('key', key, v)
+        mutate(key, updateNote, {
+          optimisticData: updateNote,
+          rollbackOnError: true, // Quay lại dữ liệu cũ nếu có lỗi
+          populateCache: true, // Lưu vào cache SWR
+          revalidate: false, // Không fetch lại ngay lập tức
+        });
       }
-    );
+    }
     setOpen(false);
 
     try {
       await deleteNote(id) 
       enqueueSnackbar("Delete successfully", { variant: "success" });
-      await mutate('/notes');
+      for (const key of cache.keys()) {
+        if (key.includes('"/notes"')) {
+          await mutate(key);
+        }
+      }
     } catch (error) {
       console.error(error);
       enqueueSnackbar("Fail to delete note", { variant: "error" });

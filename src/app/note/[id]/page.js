@@ -11,7 +11,7 @@ function NoteDetail() {
   const id = params?.id;
   const { userId } = useAuth()
 
-  const { data, error, mutate } = useSWR(`notes/${id}`, () => fetchNoteId(id))
+  const { data, error, mutate } = useSWR(`/notes/${id}`, () => fetchNoteId(id))
   // 
   if (data == undefined) return <Loading />
   return (
