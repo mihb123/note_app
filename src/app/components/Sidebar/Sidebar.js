@@ -14,8 +14,15 @@ import { useSWRConfig } from 'swr';
 const NoteSection = ({ title, count, notes, onPin, onClose, setSize, size }) => {
   const params = useParams();
   const id = params?.id;
+  const sidebarRef = React.useRef(null);
+  function handleScroll() {
+    const { scrollTop, clientHeight, scrollHeight } = sidebarRef.current;
+    if (scrollTop + clientHeight >= scrollHeight - 10) {
+      setSize(size + 1);
+    }
+  }
   return (
-    <div key={title} className="note-section">
+    <div key={title} ref={sidebarRef} onScroll={handleScroll} style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 64px)' }}>
       <ListItem>
         <Typography color="secondary">{`${title} (${count})`}</Typography>
         <Button sx={{ ml: 'auto' }}
