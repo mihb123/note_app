@@ -12,7 +12,7 @@ export default function SharePanel({ openPanel, setOpenPanel, noteId, shareUsers
   const { enqueueSnackbar } = useSnackbar();
 
   React.useEffect(() => {
-    const userData = shareUsers.map((user) => user?.User)
+    const userData = shareUsers.map((user) => user?.user)
     setUsers(userData);
   },[shareUsers])
 
@@ -28,7 +28,7 @@ export default function SharePanel({ openPanel, setOpenPanel, noteId, shareUsers
     if (result == undefined) {
       enqueueSnackbar(`Fail to share note for ${email}`, { variant: "error" });
     } else {
-      const newUser = result.User
+      const newUser = result.user
       setUsers(prev => [...prev, newUser]);
       enqueueSnackbar(`Successful to share note for ${email}`, { variant: "success" });
     }

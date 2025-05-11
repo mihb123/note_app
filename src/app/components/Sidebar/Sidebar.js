@@ -22,7 +22,7 @@ const NoteSection = ({ title, count, notes, onPin, onClose, setSize, size }) => 
     }
   }
   return (
-    <div key={title} ref={sidebarRef} onScroll={handleScroll} style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 64px)' }}>
+    <div key={title} ref={sidebarRef} onScroll={handleScroll}>
       <ListItem>
         <Typography color="secondary">{`${title} (${count})`}</Typography>
         <Button sx={{ ml: 'auto' }}
@@ -47,7 +47,6 @@ const NoteSection = ({ title, count, notes, onPin, onClose, setSize, size }) => 
 };
 
 export default function Sidebar({ userId, initialNotes, shares }) {
-  const { cache } = useSWRConfig();
   const router = useRouter();
   const getKey = (pageIndex, previousPageData) => {
     if (previousPageData && !previousPageData.length) return null 
@@ -65,7 +64,7 @@ export default function Sidebar({ userId, initialNotes, shares }) {
   let data = notes;
   if (shareNotes != undefined) {
     const updatedNotes = shareNotes.map(e => {
-      const note = e.Note;
+      const note = e.note;
       return {
         ...note,
         closed: false,
@@ -78,7 +77,6 @@ export default function Sidebar({ userId, initialNotes, shares }) {
       ...updatedNotes.filter(u => !notes.some(n => n.id === u.id))
     ];
   };
-
   const [drawerWidth, setDrawerWidth] = React.useState(300);
   const [isResizing, setIsResizing] = React.useState(false);
   const [showClosed, setShowClosed] = React.useState(false);
@@ -101,7 +99,7 @@ export default function Sidebar({ userId, initialNotes, shares }) {
 
   const handlePin = async (note) => {
     const updatedNote = { ...note, isPin: !note.isPin };
-    mutate(data => data.map(n => n.id === note.id ? updatedNote : n), false);
+    mutate(data => data.map(n => n.id === note.id ? updatedNote : n));
     await QuickUpdate(updatedNote);
   };
 

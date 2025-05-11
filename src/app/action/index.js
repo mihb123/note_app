@@ -3,11 +3,12 @@ import { revalidateTag } from 'next/cache'
 
 const url = process.env.NEXT_PUBLIC_SERVER
 const urlNote = `${url}/notes`;
-const ITEM_PER_PAGE = 7;
+const ITEM_PER_PAGE = 10;
+const updatedAtField = 'updated_at';
 
 export async function fetchNotes(userId=1, page=1) {
   try {
-    const response = await fetch(`${urlNote}?userId=${userId}&_sort=updatedAt&_order=DESC&per_page=${ITEM_PER_PAGE}&page=${page}`, {
+    const response = await fetch(`${urlNote}?userId=${userId}&_sort=${updatedAtField}&_order=DESC&per_page=${ITEM_PER_PAGE}&page=${page}`, {
       method: "GET",
       next: { tags: ['note'] }, // Gán tag 'note'
       headers: {
@@ -16,7 +17,9 @@ export async function fetchNotes(userId=1, page=1) {
       },
     })
     if (response.ok) {
-      return await response.json();
+      const result = await response.json();
+      const data = result.data;
+      return data;
     } else {
       console.error('Failed to fetch the note.');
     }
@@ -63,7 +66,6 @@ export async function createNote(data) {
       revalidateTag("note")
       const result = await response.json()
       console.log(`Create successfully id `, result.id);
-
       return result;
     } else {
       console.error('Failed to create the note.');

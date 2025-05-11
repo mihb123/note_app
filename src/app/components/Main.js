@@ -47,8 +47,6 @@ export default function Main({ item }) {
 
     for (const key of cache.keys()) {
       if (key.includes('$inf$@')) {
-        const v = cache.get(key)
-        console.log('key', key, v)
         mutate(key, updateNote, {
             optimisticData: updateNote,
             rollbackOnError: true, // Quay lại dữ liệu cũ nếu có lỗi
